@@ -24,7 +24,13 @@ class TicketSystem(commands.Cog):
     async def createTicket(self, ctx):
         await ctx.message.delete()
 
-        m1 = await ctx.send("Bitte spezifiziere mit deiner nächsten Nachricht die Aktivität, für die du suchst.\nBsp. Tiefsteinkrypta")
+        embed = discord.Embed(
+            title="Ticket",
+            colour=discord.Colour(Utils.Farbe.Light_Blue),
+            description="Bitte spezifiziere mit deiner nächsten Nachricht die Aktivität, für die du suchst.\nBsp. Tiefsteinkrypta"
+        )
+
+        m1 = await ctx.send(embed=embed)
 
         try:
 
@@ -37,9 +43,12 @@ class TicketSystem(commands.Cog):
                 pass
             return
 
-        a1 = f"Das Thema lautet: `{r1.content}`. Bitte spezifiziere in deiner Nächsten Nachricht, wie viele Spieler du benötigst.\nBsp. 3"
-        await m1.delete()
-        m2 = await ctx.send(a1)
+        embed = discord.Embed(
+            title="Ticket",
+            colour=discord.Colour(Utils.Farbe.Light_Blue),
+            description=f"Das Thema lautet: `{r1.content}`. Bitte spezifiziere in deiner Nächsten Nachricht, wie viele Spieler du benötigst.\nBsp. 3"
+        )
+        await m1.edit(embed=embed)
 
         try:
 
@@ -47,14 +56,17 @@ class TicketSystem(commands.Cog):
             await r2.delete()
         except asyncio.TimeoutError:
             try:
-                await m2.delete()
+                await m1.delete()
             except:
                 pass
             return
 
-        a2 = f"Das Thema lautet: `{r1.content}` und die Spielerzahl: `{r2.content}`. Bitte spezifiziere in deiner Nächsten Nachricht, was deine Beschreibung dazu ist.\nBsp. Tiefsteinkrypta Fresh mit erfahrung"
-        await m2.delete()
-        m3 = await ctx.send(a2)
+        embed = discord.Embed(
+            title="Ticket",
+            colour=discord.Colour(Utils.Farbe.Light_Blue),
+            description=f"Das Thema lautet: `{r1.content}` und die Spielerzahl: `{r2.content}`. Bitte spezifiziere in deiner Nächsten Nachricht, was deine Beschreibung dazu ist.\nBsp. Tiefsteinkrypta Fresh mit erfahrung"
+        )
+        await m1.edit(embed=embed)
 
         try:
 
@@ -62,7 +74,7 @@ class TicketSystem(commands.Cog):
             await r3.delete()
         except asyncio.TimeoutError:
             try:
-                await m3.delete()
+                await m1.delete()
             except:
                 pass
             return
@@ -79,7 +91,7 @@ class TicketSystem(commands.Cog):
 
         message = await Utils.ChannelSending.get_channel(ctx.author, embed, "tickets")
 
-        await m3.delete()
+        await m1.delete()
 
         await Utils.Ticket.edit_Ticket(self, ctx.author, message.id, 1)
         await Utils.Ticket.edit_Ticket(self, ctx.author, message.channel.id, 2)

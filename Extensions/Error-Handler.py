@@ -13,7 +13,7 @@ import Utils
 # Cog Initialising
 
 
-class ErrorHandler(commands.Cog):
+class ErrorHandling(commands.Cog):
 
     def __init__(self, client):
         self.client = client
@@ -23,23 +23,42 @@ class ErrorHandler(commands.Cog):
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
 
-        if isinstance(error, commands.CommandInvokeError):
-
-            if isinstance(error, commands.CheckFailure):
-                try:
-                    await ctx.message.delete()
-                except Exception as e:
-                    return
+        if isinstance(error, commands.CheckFailure):
+            try:
+                await ctx.message.delete()
+            except Exception as e:
                 return
+            return
 
-            elif isinstance(error, commands.DisabledCommand) or isinstance(error, commands.NoPrivateMessage) or isinstance(error, commands.BadArgument or commands.ArgumentParsingError or commands.BadBoolArgument) or \
-                isinstance(error, commands.MissingRequiredArgument or commands.TooManyArguments) or isinstance(error, commands.MissingPermissions or commands.BotMissingPermissions) or \
-                    isinstance(error, commands.NotOwner) or isinstance(error, commands.CommandOnCooldown) or isinstance(error, commands.CheckFailure):
+        elif isinstance(error, commands.DisabledCommand) or isinstance(error, commands.NoPrivateMessage) or isinstance(error, commands.BadArgument or commands.ArgumentParsingError or commands.BadBoolArgument) or \
+            isinstance(error, commands.MissingRequiredArgument or commands.TooManyArguments) or isinstance(error, commands.MissingPermissions or commands.BotMissingPermissions) or \
+                isinstance(error, commands.NotOwner) or isinstance(error, commands.CommandOnCooldown) or isinstance(error, commands.CheckFailure):
 
+            embed = discord.Embed(
+                title=f'{Utils.YamlContainerManagement.get_yamlCGL("Embed", "HTitle")}',
+                colour=discord.Colour(Utils.Farbe.Dark_Blue),
+                description=f'Fehler:\n`{error}`\n'
+            )
+            embed.set_thumbnail(url=self.client.user.avatar_url)
+
+            try:
+                await ctx.message.delete()
+            except discord.HTTPException:
+                pass
+            m = await ctx.send(embed=embed)
+            await asyncio.sleep(15)
+            try:
+                await m.delete()
+            except discord.HTTPException:
+                pass
+
+        elif isinstance(error, commands.CommandInvokeError):
+
+            if isinstance(error.original, Utils.DatabasePreconditioning):
                 embed = discord.Embed(
                     title=f'{Utils.YamlContainerManagement.get_yamlCGL("Embed", "HTitle")}',
                     colour=discord.Colour(Utils.Farbe.Dark_Blue),
-                    description=f'Fehler:`\n{error}\n`'
+                    description=f'Ein Fehler in der Datenbank ist aufgetreten:`\n{error}\n`'
                 )
                 embed.set_thumbnail(url=self.client.user.avatar_url)
 
@@ -47,8 +66,8 @@ class ErrorHandler(commands.Cog):
                     await ctx.message.delete()
                 except discord.HTTPException:
                     pass
-                    m = await ctx.send(embed=embed)
-                    await asyncio.sleep(15)
+                m = await ctx.send(embed=embed)
+                await asyncio.sleep(15)
                 try:
                     await m.delete()
                 except discord.HTTPException:
@@ -81,8 +100,7 @@ class ErrorHandler(commands.Cog):
                         title="\u200b\nEin schwerwiegender Fehler ist aufgetreten!\n\u200b",
                         colour=discord.Colour(Utils.Farbe.Dark_Blue)
                     )
-                    erembed.set_author(name=f"{timestamp.strftime(r'%I:%M %p')}",
-                                       icon_url=Utils.YamlContainerManagement.get_yamlCGL("Bilder", "Clock"))
+                    erembed.set_author(name=f"{timestamp.strftime(r'%I:%M %p')}")
                     erembed.add_field(name='**OPERATOR:**', value=f'```fix\n[{ctx.author} / {ctx.author.id}]\n```',
                                       inline=False)
                     try:
@@ -109,12 +127,13 @@ class ErrorHandler(commands.Cog):
                         await ctx.message.delete()
                     except discord.HTTPException:
                         pass
-                        m = await ctx.send(embed=embed)
-                        await asyncio.sleep(15)
+                    m = await ctx.send(embed=embed)
+                    await asyncio.sleep(15)
                     try:
                         await m.delete()
                     except discord.HTTPException:
                         pass
+
 
     # COMMAND_HANDLER
 
@@ -171,4 +190,4 @@ class ErrorHandler(commands.Cog):
 
 
 def setup(client):
-    client.add_cog(ErrorHandler(client))
+    client.add_cog(ErrorHandling(client))

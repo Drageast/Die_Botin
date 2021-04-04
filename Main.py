@@ -14,6 +14,7 @@ client = commands.AutoShardedBot(command_prefix=Utils.YamlContainerManagement.ge
                                  intents=intents,
                                  case_insensitive=True)
 
+
 # MongoDB Initialisierung / Benachrichtigung sobald der Bot Online.
 
 
@@ -23,8 +24,7 @@ async def on_ready():
 
     await client.change_presence(status="", activity=discord.Game(""))
     client.mongo = MongoClient(str(client.connection_url))
-    client.ticket = client.mongo["Utils"]["Ticket"]
-    client.Uccount = client.mongo["Utils"]["Uccount"]
+    client.ticket = client.mongo["Die_Botin"]["Tickets"]
     print(f'DATENBANK AKTIV\n<-->\nONLINE\n<-->\n{client.user}\n<-->')
 
 

@@ -2,6 +2,7 @@
 import asyncio
 import discord
 import yaml
+from .DB_Preconditioning import Ticket
 
 
 class YamlContainerManagement:
@@ -70,21 +71,6 @@ class TimeSend:
         except:
             pass
 
-    @staticmethod
-    async def s_file(ctx, file, seconds=None):
-
-        seconds_ = seconds if seconds is not None else 10
-
-        try:
-            await ctx.message.delete()
-        except:
-            pass
-        m = await ctx.send(file=file)
-        await asyncio.sleep(seconds_)
-        try:
-            await m.delete()
-        except:
-            pass
 
     @staticmethod
     async def sm_ctx(ctx, message, seconds=None):
@@ -117,6 +103,72 @@ class TimeSend:
             await m.delete()
         except:
             pass
+
+
+class TicketReactor:
+    def __init__(self, client):
+        self.client = client
+
+    async def ListenAndReact(self, ctx, user):
+
+        x = 0
+
+        data = await Ticket.get_Ticket(self, user)
+
+        senderID = data["_id"]
+        thema = data["Activity"]
+        messageID = data["IDs"]["MessageID"]
+        channelid = data["IDs"]["ChannelID"]
+        neededParticipants = data["NeededParticipants"]
+
+        channel = self.client.get_channel(channelid)
+        m = await channel.fetch_message(messageID)
+
+        await m.add_reaction("✅")
+
+        def check(reaction, user):
+            return user != self.client and str(reaction.emoji) == "✅"
+
+        sender = await self.client.fetch_user(senderID)
+
+        while x < int(neededParticipants):
+            reaction, user = await self.client.wait_for("reaction_add", check=check)
+
+            embed = discord.Embed(
+                title=f"Es hat sich jemand für: {thema} gemeldet.",
+                colour=discord.Colour(Farbe.Light_Blue),
+                description=f"Der Discord Name lautet: `{user.name}`, melde dich bei ihm, wenn du den Gamertag benötigst."
+            )
+
+            await sender.send(embed=embed)
+
+            embed2 = discord.Embed(
+                title="Ich habe dich angemeldet!",
+                colour=discord.Colour(Farbe.Light_Blue),
+                description=f"Der Spieler `{sender.name}` benötigt noch deinen Gamertag, bitte melde dich bei ihm."
+            )
+
+            await user.send(embed=embed2)
+
+            x += 1
+
+        await m.delete()
+        await Ticket.delete_Ticket(self, ctx.author)
+
+
+class ChannelSending:
+
+    @staticmethod
+    async def get_channel(user, embed, name):
+        channel = discord.utils.get(user.guild.text_channels, name=name)
+
+        if channel is None:
+            return
+
+        else:
+
+            message = await channel.send(embed=embed)
+            return message
 
 
 class Pagination:
@@ -213,21 +265,6 @@ class Pagination:
                 except:
                     pass
                 break
-
-
-# GET_CHANNEL
-
-
-async def get_channel(user, embed, name):
-    channel = discord.utils.get(user.guild.text_channels, name=name)
-
-    if channel is None:
-        return
-
-    else:
-
-        await channel.send(embed=embed)
-        return
 
 
 # VARIABLEN

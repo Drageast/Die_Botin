@@ -4,6 +4,7 @@ Variablen:
     Prefix: "!"
     Token: "ODI4MjI5MTYxNjEyMjE0Mjky.YGmigw.Vg2fUHtnq9o0rqJiL5imzWtzLqw"
     MongoDB: "mongodb+srv://Drageast:Schmidt04@cluster0.r1bgi.mongodb.net/Die_Botin?retryWrites=true&w=majority"
+    Webhook: "https://discordapp.com/api/webhooks/828241260425773086/O5HK2TedgGkxQmrVnP50cfaQ6YQIZidunuU9RWqggexXlV_aRe-Kj7ftShfN_P4RgMNB"
 
   Dev_IDs:
     Drageast: 431017472083099660
@@ -15,4 +16,4 @@ Bilder:
 
 Embed:
 
-  HTitle: "Die Faehigkeit zu sprechen, macht dich noch nicht intelligent."
+  HTitle: "Ein Fehler ist aufgetreten."

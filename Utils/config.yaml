@@ -1,0 +1,18 @@
+Variablen:
+
+  ClientSide:
+    Prefix: "!"
+    Token: "ODI4MjI5MTYxNjEyMjE0Mjky.YGmigw.Vg2fUHtnq9o0rqJiL5imzWtzLqw"
+    MongoDB: "mongodb+srv://Drageast:Schmidt04@cluster0.r1bgi.mongodb.net/Die_Botin?retryWrites=true&w=majority"
+
+  Dev_IDs:
+    Drageast: 431017472083099660
+
+Bilder:
+
+  PvE: "https://i.imgur.com/cTBu8ZS.jpg"
+  PvP: "https://i.imgur.com/nOkoglx.jpg"
+
+Embed:
+
+  HTitle: "Die Faehigkeit zu sprechen, macht dich noch nicht intelligent."

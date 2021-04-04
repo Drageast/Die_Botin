@@ -58,7 +58,7 @@ class ErrorHandling(commands.Cog):
                 embed = discord.Embed(
                     title=f'{Utils.YamlContainerManagement.get_yamlCGL("Embed", "HTitle")}',
                     colour=discord.Colour(Utils.Farbe.Dark_Blue),
-                    description=f'Ein Fehler in der Datenbank ist aufgetreten:`\n{error}\n`'
+                    description=f'Ein Fehler in der Datenbank ist aufgetreten:\n`{error}`\n'
                 )
                 embed.set_thumbnail(url=self.client.user.avatar_url)
 

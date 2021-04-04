@@ -27,7 +27,7 @@ class TicketSystem(commands.Cog):
         embed = discord.Embed(
             title="Ticket",
             colour=discord.Colour(Utils.Farbe.Light_Blue),
-            description="Bitte spezifiziere mit deiner nächsten Nachricht die Aktivität, für die du suchst.\nBsp. Tiefsteinkrypta"
+            description="Bitte spezifiziere mit deiner nächsten Nachricht die Aktivität, für die du suchst.\nBsp: **Tiefsteinkrypta**"
         )
 
         m1 = await ctx.send(embed=embed)
@@ -46,7 +46,7 @@ class TicketSystem(commands.Cog):
         embed = discord.Embed(
             title="Ticket",
             colour=discord.Colour(Utils.Farbe.Light_Blue),
-            description=f"Das Thema lautet: `{r1.content}`. Bitte spezifiziere in deiner Nächsten Nachricht, wie viele Spieler du benötigst.\nBsp. 3"
+            description=f"Das Thema lautet: `{r1.content}`. Bitte spezifiziere in deiner Nächsten Nachricht, wie viele Spieler du benötigst.\nBsp: **3**"
         )
         await m1.edit(embed=embed)
 
@@ -64,7 +64,7 @@ class TicketSystem(commands.Cog):
         embed = discord.Embed(
             title="Ticket",
             colour=discord.Colour(Utils.Farbe.Light_Blue),
-            description=f"Das Thema lautet: `{r1.content}` und die Spielerzahl: `{r2.content}`. Bitte spezifiziere in deiner Nächsten Nachricht, was deine Beschreibung dazu ist.\nBsp. Tiefsteinkrypta Fresh mit erfahrung"
+            description=f"Das Thema lautet: `{r1.content}` und die Spielerzahl: `{r2.content}`. Bitte spezifiziere in deiner Nächsten Nachricht, was deine Beschreibung dazu ist.\nBsp: **Tiefsteinkrypta Fresh mit Erfahrung**"
         )
         await m1.edit(embed=embed)
 
@@ -90,6 +90,7 @@ class TicketSystem(commands.Cog):
         embed.add_field(name="Benötigte Spieler:", value=f"{r2.content}")
 
         message = await Utils.ChannelSending.get_channel(ctx.author, embed, "tickets")
+        await message.add_reaction("✅")
 
         await m1.delete()
 
@@ -97,6 +98,28 @@ class TicketSystem(commands.Cog):
         await Utils.Ticket.edit_Ticket(self, ctx.author, message.channel.id, 2)
 
         await Utils.TicketReactor.ListenAndReact(self, ctx, ctx.author)
+
+
+    @commands.command()
+    async def deleteTicket(self, ctx):
+
+        data = await Utils.Ticket.get_Ticket(self, ctx.author)
+
+        if data["IDs"]["MessageID"] is None or data["IDs"]["ChannelID"] is None:
+            await Utils.Ticket.delete_Ticket(self, ctx.author)
+
+        else:
+
+            messageID = data["IDs"]["MessageID"]
+            channelid = data["IDs"]["ChannelID"]
+
+            channel = self.client.get_channel(channelid)
+            m = await channel.fetch_message(messageID)
+
+            try:
+                await m.delete()
+            except:
+                pass
 
 # Cog Finishing
 

@@ -109,6 +109,12 @@ class TicketReactor:
     def __init__(self, client):
         self.client = client
 
+    async def wait_message(self, user):
+        new_message = await self.client.wait_for('message', check=lambda message: message.author == user,
+                                                 timeout=120.0)
+
+        return new_message
+
     async def ListenAndReact(self, ctx, user):
 
         x = 0
@@ -124,31 +130,34 @@ class TicketReactor:
         channel = self.client.get_channel(channelid)
         m = await channel.fetch_message(messageID)
 
-        await m.add_reaction("✅")
 
         def check(reaction, user):
-            return user != self.client and str(reaction.emoji) == "✅"
+            return user == user and str(reaction.emoji) == "✅"
 
         sender = await self.client.fetch_user(senderID)
 
         while x < int(neededParticipants):
             reaction, user = await self.client.wait_for("reaction_add", check=check)
 
-            embed = discord.Embed(
-                title=f"Es hat sich jemand für: {thema} gemeldet.",
-                colour=discord.Colour(Farbe.Light_Blue),
-                description=f"Der Discord Name lautet: `{user.name}`, melde dich bei ihm, wenn du den Gamertag benötigst."
-            )
-
-            await sender.send(embed=embed)
-
             embed2 = discord.Embed(
                 title="Ich habe dich angemeldet!",
                 colour=discord.Colour(Farbe.Light_Blue),
-                description=f"Der Spieler `{sender.name}` benötigt noch deinen Gamertag, bitte melde dich bei ihm."
+                description=f"Der Spieler `{sender.name}` benötigt noch deinen Gamertag. Bitte Antworte mit deinem Gamertag."
             )
 
             await user.send(embed=embed2)
+            try:
+                r = await TicketReactor.wait_message(self, user)
+            except asyncio.TimeoutError:
+                await m.remove_reaction(reaction, user)
+                return
+
+            embed = discord.Embed(
+                title=f"Anmeldung bei: {thema}",
+                colour=discord.Colour(Farbe.Light_Blue),
+                description=f"Der Discord Nutzer: `{user.name}` hat sich mit dem InGame Namen : **{r.content}** gemeldet."
+            )
+            await sender.send(embed=embed)
 
             x += 1
 

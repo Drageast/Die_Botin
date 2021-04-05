@@ -2,7 +2,6 @@
 import discord
 from discord.ext import commands
 from pymongo import MongoClient
-from discord.utils import get
 import os
 # Utils
 import Utils
@@ -23,7 +22,7 @@ client = commands.AutoShardedBot(command_prefix=Utils.YamlContainerManagement.ge
 async def on_ready():
     client.connection_url = Utils.YamlContainerManagement.get_yamlCGL("Variablen", "ClientSide", "MongoDB")
 
-    await client.change_presence(status="", activity=discord.Game(""))
+    await client.change_presence(status=discord.Status.idle, activity=discord.Game("Destiny 2"))
     client.mongo = MongoClient(str(client.connection_url))
     client.ticket = client.mongo["Die_Botin"]["Tickets"]
     print(f'DATENBANK AKTIV\n<-->\nONLINE\n<-->\n{client.user}\n<-->')

@@ -119,6 +119,7 @@ class TicketReactor:
 
         discordName = []
         InGameName = []
+        mixed = []
 
         x = 0
 
@@ -183,11 +184,12 @@ class TicketReactor:
         embed2 = discord.Embed(
             title=f"Anmeldung bei: {thema}",
             colour=discord.Colour(Farbe.Dark_Blue),
-            description=f"{sender.name} die gewünschte Spielerzahl ist erreicht."
+            description=f"{sender.mention} die gewünschte Spielerzahl ist erreicht."
         )
 
-        for user_, gamername in discordName, InGameName:
-            embed.add_field(name=f"u´{user_.name}", value=f"Ingame: `{gamername}`")
+        test = len(discordName)
+        for i in range(test):
+            embed2.add_field(name=f"{discordName[i]}", value=f"{InGameName[i]}")
 
         await sender.send(embed=embed2)
 

@@ -20,6 +20,7 @@ class TicketSystem(commands.Cog):
 
         return new_message
 
+    @commands.guild_only()
     @commands.command(aliases=["cticket"])
     async def createTicket(self, ctx):
 
@@ -152,7 +153,7 @@ class TicketSystem(commands.Cog):
 
         await Utils.TicketReactor.ListenAndReact(self, ctx, ctx.author)
 
-
+    @commands.guild_only()
     @commands.command(aliases=["dticket"])
     async def deleteTicket(self, ctx):
 

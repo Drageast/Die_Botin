@@ -29,13 +29,6 @@ async def on_ready():
     print(f'DATENBANK AKTIV\n<-->\nONLINE\n<-->\n{client.user}\n<-->')
 
 
-@client.command()
-async def get_emoji(ctx, name):
-    emoji = get(client.get_all_emojis(), name=name)
-    print(emoji)
-    await ctx.send(emoji)
-
-
 # Laden der Erweiterungen
 
 

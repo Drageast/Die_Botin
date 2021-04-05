@@ -16,12 +16,12 @@ class TicketSystem(commands.Cog):
 
     async def wait_message(self, ctx):
         new_message = await self.client.wait_for('message', check=lambda message: message.author == ctx.author,
-                                                 timeout=120.0)
+                                                 timeout=360)
 
         return new_message
 
     @commands.guild_only()
-    @commands.command(aliases=["cticket"])
+    @commands.command(aliases=["ct"])
     async def createTicket(self, ctx):
 
         await ctx.message.delete()
@@ -48,27 +48,8 @@ class TicketSystem(commands.Cog):
         try:
             reaction, user = await self.client.wait_for("reaction_add", timeout=120, check=check)
 
-            choice = "vorhut" if str(reaction.emoji) == Vorhut else ("schmelztiegel" if str(reaction.emoji) == Schmelztiegel else ("gambit" if str(reaction.emoji) == Gambit else "raid"))
+            choice = "Vorhut" if str(reaction.emoji) == Vorhut else ("Schmelztiegel" if str(reaction.emoji) == Schmelztiegel else ("Gambit" if str(reaction.emoji) == Gambit else "Raid"))
 
-        except asyncio.TimeoutError:
-            try:
-                await m1.delete()
-            except:
-                pass
-            return
-
-        embed = discord.Embed(
-            title="Ticket",
-            colour=discord.Colour(Utils.Farbe.Light_Blue),
-            description="Benenne nun in einer neuen Nachricht, **für welche Aktivität du Spieler suchst**.\nBeispiel: *Tiefsteinkrypta*"
-        )
-        await m1.edit(embed=embed)
-        await m1.clear_reactions()
-
-        try:
-
-            r1 = await self.wait_message(ctx)
-            await r1.delete()
         except asyncio.TimeoutError:
             try:
                 await m1.delete()
@@ -98,7 +79,7 @@ class TicketSystem(commands.Cog):
             title="Ticket",
             colour=discord.Colour(Utils.Farbe.Light_Blue),
             description=f"Benenne nun in einer neuen Nachricht, **was deine Beschreibung dazu ist.** _Du kannst zusätzlich eine Uhrzeit anhängen, wann das event stattfinden,_"
-                        f"_soll. Dazu Füge nach der Beschreibung ein `= Uhrzeit` ein._\nBeispiel: *Tiefsteinkrypta Fresh mit Erfahrung = 13:00*"
+                        f"soll. Dazu Füge nach der Beschreibung ein `= Uhrzeit` ein._\nBeispiel: *Tiefsteinkrypta Fresh mit Erfahrung = 13:00*"
         )
         await m1.edit(embed=embed)
 
@@ -127,14 +108,15 @@ class TicketSystem(commands.Cog):
         else:
             inhaltUhrzeit = None
 
-        response1 = inhalt1 if inhaltUhrzeit is not None else r1.content
+        response1 = inhalt1 if inhaltUhrzeit is not None else r3.content
+        colour = Utils.Farbe.TezzQu if ctx.author.id == "336549722464452620" else Utils.Farbe.Light_Blue
 
-        data = await Utils.Ticket.create_Ticket(self, ctx.author, r1.content, int(r2.content), response1, 1)
+        data = await Utils.Ticket.create_Ticket(self, ctx.author, choice, int(r2.content), response1, 1)
 
 
         embed = discord.Embed(
-            title=f"Spieler suche: {r1.content}",
-            colour=discord.Colour(Utils.Farbe.Light_Blue),
+            title=f"Spieler suche: {choice}",
+            colour=discord.Colour(colour),
             description=f"{response1}"
         )
         embed.add_field(name="Benötigte Spieler:", value=f"{r2.content}")
@@ -142,7 +124,7 @@ class TicketSystem(commands.Cog):
         if inhaltUhrzeit is not None:
             embed.add_field(name="Startzeit:", value=f"{inhaltUhrzeit}")
 
-        message = await Utils.ChannelSending.get_channel(ctx.author, embed, choice)
+        message = await Utils.ChannelSending.get_channel(ctx.author, embed, choice.lower())
         await message.add_reaction("✅")
         await asyncio.sleep(1)
 
@@ -154,7 +136,7 @@ class TicketSystem(commands.Cog):
         await Utils.TicketReactor.ListenAndReact(self, ctx, ctx.author)
 
     @commands.guild_only()
-    @commands.command(aliases=["dticket"])
+    @commands.command(aliases=["dt"])
     async def deleteTicket(self, ctx):
 
         data = await Utils.Ticket.get_Ticket(self, ctx.author)

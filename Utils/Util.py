@@ -318,3 +318,5 @@ class Farbe:
     Orange = 0xfd9644
 
     Darker_Theme = 0x23272a
+
+    TezzQu = 0xff6a00

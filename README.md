@@ -16,7 +16,7 @@ Dieser Bot ist für die Community: _Destiny 2 Deutschland Community ( PlayStatio
 - [PyNaCl](https://pypi.org/project/PyNaCl/)
 - [Dnspython](https://pypi.org/project/dnspython)
 
-##### Modularität:
+### Modularität:
 
 Der Discord Bot ist extra modular gestaltet, damit man ihn sehr einfach auf einen
 Server anpassen kann. Dazu verändert man die benötigten Informationen in der `config.yaml` - Datei.
@@ -31,6 +31,12 @@ hinzu und setzten sie diese in der richtigen formatierung in den Bereich:
 #### Mongo - Datenbank:
 
 Stellen Sie sicher, dass Sie ein gültiges [MongoDB-Konto](https://www.mongodb.com/) besitzen. Erstellen sie daraufhin ein `Cluster`
-und folgen sie den Anweisungen: `How to connect to your application`. Den erhaltenen link fügen sie in der
+und folgen sie den Anweisungen: `How to connect to your application`. Den erhaltenen Link fügen sie in der
 `config.yaml` - Datei im passendem Bereich ein. Je nachdem, wie ihre `Collection` heißt, müssen sie in dem Skrip:
 `Main.py` in **Zeile 27** unter `client.mongo["Cluster Name"]["Colection Name"]` die Namen anpassen.
+
+##### Webhook - Fehlerbewältigung
+
+Sie können für einen Kanal ihrer Wahl einen Webhook anlegen. Dort sendet der Bot bei ungeklärter korrumption einen 
+ausführlichen Fehlerbericht. Wenn sie einen Webhook erstellt haben, können sie einen Link zu diesem kopieren,
+diesen fügen sie in dem korrespondierendem Bereich in der `config.yaml` - Datei ein.

@@ -117,6 +117,9 @@ class TicketReactor:
 
     async def ListenAndReact(self, ctx, user):
 
+        discordName = []
+        InGameName = []
+
         x = 0
 
         data = await Ticket.get_Ticket(self, user)
@@ -159,10 +162,34 @@ class TicketReactor:
             )
             await sender.send(embed=embed)
 
+            discordName.append(user)
+            InGameName.append(r.content)
+
             x += 1
 
         await m.delete()
         await Ticket.delete_Ticket(self, ctx.author)
+
+        for user_ in discordName:
+
+            embed2 = discord.Embed(
+                title=f"Anmeldung bei: {thema}",
+                colour=discord.Colour(Farbe.Dark_Blue),
+                description=f"Die gewünschte Spielerzahl ist erreicht."
+            )
+
+            await user_.send(embed=embed2)
+
+        embed2 = discord.Embed(
+            title=f"Anmeldung bei: {thema}",
+            colour=discord.Colour(Farbe.Dark_Blue),
+            description=f"{sender.name} die gewünschte Spielerzahl ist erreicht."
+        )
+
+        for user_, gamername in discordName, InGameName:
+            embed.add_field(name=f"u´{user_.name}", value=f"Ingame: `{gamername}`")
+
+        await sender.send(embed=embed2)
 
 
 class ChannelSending:

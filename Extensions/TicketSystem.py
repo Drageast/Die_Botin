@@ -96,7 +96,8 @@ class TicketSystem(commands.Cog):
         embed = discord.Embed(
             title="Ticket",
             colour=discord.Colour(Utils.Farbe.Light_Blue),
-            description=f"Benenne nun in einer neuen Nachricht, **was deine Beschreibung dazu ist**.\nBeispiel: *Tiefsteinkrypta Fresh mit Erfahrung*"
+            description=f"Benenne nun in einer neuen Nachricht, **was deine Beschreibung dazu ist.** _Du kannst zusätzlich eine Uhrzeit anhängen, wann das event stattfinden,_"
+                        f"_soll. Dazu Füge nach der Beschreibung ein `= Uhrzeit` ein._\nBeispiel: *Tiefsteinkrypta Fresh mit Erfahrung = 13:00*"
         )
         await m1.edit(embed=embed)
 
@@ -111,19 +112,38 @@ class TicketSystem(commands.Cog):
                 pass
             return
 
-        data = await Utils.Ticket.create_Ticket(self, ctx.author, r1.content, int(r2.content), r3.content, 1)
+        # Textverarbeitung
+
+        inhalt = r3.content
+
+        if "=" in inhalt:
+            inhalt1, inhalt2 = inhalt.split("=")
+
+            if inhalt2.endswith("Uhr" or "uhr"):
+                inhaltUhrzeit = inhalt2
+            else:
+                inhaltUhrzeit = f"{inhalt2}Uhr"
+        else:
+            inhaltUhrzeit = None
+
+        response1 = inhalt1 if inhaltUhrzeit is not None else r1.content
+
+        data = await Utils.Ticket.create_Ticket(self, ctx.author, r1.content, int(r2.content), response1, 1)
 
 
         embed = discord.Embed(
             title=f"Spieler suche: {r1.content}",
             colour=discord.Colour(Utils.Farbe.Light_Blue),
-            description=f"{r3.content}"
+            description=f"{response1}"
         )
         embed.add_field(name="Benötigte Spieler:", value=f"{r2.content}")
         embed.set_footer(text=f"Gesucht von: {ctx.author.name}", icon_url=ctx.author.avatar_url)
+        if inhaltUhrzeit is not None:
+            embed.add_field(name="Startzeit:", value=f"{inhaltUhrzeit}")
 
         message = await Utils.ChannelSending.get_channel(ctx.author, embed, choice)
         await message.add_reaction("✅")
+        await asyncio.sleep(1)
 
         await m1.delete()
 
@@ -137,8 +157,9 @@ class TicketSystem(commands.Cog):
     async def deleteTicket(self, ctx):
 
         data = await Utils.Ticket.get_Ticket(self, ctx.author)
+        await ctx.message.delete()
 
-        if data["IDs"]["MessageID"] is None or data["IDs"]["ChannelID"] is None:
+        if data["IDs"]["MessageID"] is None or data["IDs"]["ChannelID"] is None or data["IDs"]["MessageID"] == data["IDs"]["ChannelID"]:
             await Utils.Ticket.delete_Ticket(self, ctx.author)
 
         else:
@@ -153,6 +174,7 @@ class TicketSystem(commands.Cog):
                 await m.delete()
             except:
                 pass
+            await Utils.Ticket.delete_Ticket(self, ctx.author)
 
 # Cog Finishing
 

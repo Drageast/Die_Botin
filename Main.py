@@ -2,6 +2,7 @@
 import discord
 from discord.ext import commands
 from pymongo import MongoClient
+from discord.utils import get
 import os
 # Utils
 import Utils
@@ -26,6 +27,13 @@ async def on_ready():
     client.mongo = MongoClient(str(client.connection_url))
     client.ticket = client.mongo["Die_Botin"]["Tickets"]
     print(f'DATENBANK AKTIV\n<-->\nONLINE\n<-->\n{client.user}\n<-->')
+
+
+@client.command()
+async def get_emoji(ctx, name):
+    emoji = get(client.get_all_emojis(), name=name)
+    print(emoji)
+    await ctx.send(emoji)
 
 
 # Laden der Erweiterungen

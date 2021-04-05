@@ -20,17 +20,49 @@ class TicketSystem(commands.Cog):
 
         return new_message
 
-    @commands.command()
+    @commands.command(aliases=["cticket"])
     async def createTicket(self, ctx):
+
         await ctx.message.delete()
+        Vorhut = Utils.YamlContainerManagement.get_yamlCGL("Variablen", "UniversalEmoji", "Vorhut")
+        Schmelztiegel = Utils.YamlContainerManagement.get_yamlCGL("Variablen", "UniversalEmoji", "Schmelztiegel")
+        Gambit = Utils.YamlContainerManagement.get_yamlCGL("Variablen", "UniversalEmoji", "Gambit")
+        Raid = Utils.YamlContainerManagement.get_yamlCGL("Variablen", "UniversalEmoji", "Raid")
 
         embed = discord.Embed(
             title="Ticket",
             colour=discord.Colour(Utils.Farbe.Light_Blue),
-            description="Bitte spezifiziere mit deiner nächsten Nachricht die Aktivität, für die du suchst.\nBsp: **Tiefsteinkrypta**"
+            description=f"Bitte klicke unten auf das Symbol, passend zu der Aktivität.\n({Raid}) **Raid**, ({Vorhut}) **Vorhut**, ({Gambit}) **Gambit**, ({Schmelztiegel}) **Schmelztiegel**"
         )
 
+        def check(reaction, user):
+            return user == ctx.author and str(reaction.emoji) in [Vorhut, Schmelztiegel, Gambit, Raid]
+
         m1 = await ctx.send(embed=embed)
+        await m1.add_reaction(Raid)
+        await m1.add_reaction(Vorhut)
+        await m1.add_reaction(Gambit)
+        await m1.add_reaction(Schmelztiegel)
+
+        try:
+            reaction, user = await self.client.wait_for("reaction_add", timeout=120, check=check)
+
+            choice = "vorhut" if str(reaction.emoji) == Vorhut else ("schmelztiegel" if str(reaction.emoji) == Schmelztiegel else ("gambit" if str(reaction.emoji) == Gambit else "raid"))
+
+        except asyncio.TimeoutError:
+            try:
+                await m1.delete()
+            except:
+                pass
+            return
+
+        embed = discord.Embed(
+            title="Ticket",
+            colour=discord.Colour(Utils.Farbe.Light_Blue),
+            description="Benenne nun in einer neuen Nachricht, **für welche Aktivität du Spieler suchst**.\nBeispiel: *Tiefsteinkrypta*"
+        )
+        await m1.edit(embed=embed)
+        await m1.clear_reactions()
 
         try:
 
@@ -46,7 +78,7 @@ class TicketSystem(commands.Cog):
         embed = discord.Embed(
             title="Ticket",
             colour=discord.Colour(Utils.Farbe.Light_Blue),
-            description=f"Das Thema lautet: `{r1.content}`. Bitte spezifiziere in deiner Nächsten Nachricht, wie viele Spieler du benötigst.\nBsp: **3**"
+            description=f"Benenne nun in einer neuen Nachricht, **wie viele Spieler du benötigst**.\nBeispiel: *3*"
         )
         await m1.edit(embed=embed)
 
@@ -64,7 +96,7 @@ class TicketSystem(commands.Cog):
         embed = discord.Embed(
             title="Ticket",
             colour=discord.Colour(Utils.Farbe.Light_Blue),
-            description=f"Das Thema lautet: `{r1.content}` und die Spielerzahl: `{r2.content}`. Bitte spezifiziere in deiner Nächsten Nachricht, was deine Beschreibung dazu ist.\nBsp: **Tiefsteinkrypta Fresh mit Erfahrung**"
+            description=f"Benenne nun in einer neuen Nachricht, **was deine Beschreibung dazu ist**.\nBeispiel: *Tiefsteinkrypta Fresh mit Erfahrung*"
         )
         await m1.edit(embed=embed)
 
@@ -88,8 +120,9 @@ class TicketSystem(commands.Cog):
             description=f"{r3.content}"
         )
         embed.add_field(name="Benötigte Spieler:", value=f"{r2.content}")
+        embed.set_footer(text=f"Gesucht von: {ctx.author.name}", icon_url=ctx.author.avatar_url)
 
-        message = await Utils.ChannelSending.get_channel(ctx.author, embed, "tickets")
+        message = await Utils.ChannelSending.get_channel(ctx.author, embed, choice)
         await message.add_reaction("✅")
 
         await m1.delete()
@@ -100,7 +133,7 @@ class TicketSystem(commands.Cog):
         await Utils.TicketReactor.ListenAndReact(self, ctx, ctx.author)
 
 
-    @commands.command()
+    @commands.command(aliases=["dticket"])
     async def deleteTicket(self, ctx):
 
         data = await Utils.Ticket.get_Ticket(self, ctx.author)

@@ -155,7 +155,7 @@ class TicketReactor:
             embed = discord.Embed(
                 title=f"Anmeldung bei: {thema}",
                 colour=discord.Colour(Farbe.Light_Blue),
-                description=f"Der Discord Nutzer: `{user.name}` hat sich mit dem InGame Namen : **{r.content}** gemeldet."
+                description=f"Der Discord Nutzer: `{user.name}` hat sich mit dem **InGame Namen**: `{r.content}` gemeldet."
             )
             await sender.send(embed=embed)
 
@@ -184,7 +184,7 @@ class Pagination:
     def __init__(self, client):
         self.client = client
 
-    async def Pag(self, ctx, content, info = None):
+    async def Pag(self, ctx, content, info=None):
 
         contents = content
 

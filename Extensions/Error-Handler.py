@@ -138,7 +138,7 @@ class ErrorHandling(commands.Cog):
     # COMMAND_HANDLER
 
 
-    @commands.command(aliases=["ds"])
+    @commands.command(aliases=["deas"])
     @commands.is_owner()
     async def disable_commands(self, ctx, *, command_name):
 

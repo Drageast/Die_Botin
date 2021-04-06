@@ -313,3 +313,7 @@ class Farbe:
     Darker_Theme = 0x23272a
 
     TezzQu = 0xff6a00
+
+    Welcome_Blue = 0x14dd
+
+    Welcomer_Blue = 0x7c5f8

@@ -21,8 +21,12 @@ client = commands.AutoShardedBot(command_prefix=Utils.YamlContainerManagement.ge
 @client.listen()
 async def on_ready():
     client.connection_url = Utils.YamlContainerManagement.get_yamlCGL("Variablen", "ClientSide", "MongoDB")
+    status = int(Utils.YamlContainerManagement.get_yamlCGL("Variablen", "ClientSide", "Status"))
 
-    await client.change_presence(status=discord.Status.idle, activity=discord.Game("Destiny 2"))
+    choiceStatus = discord.Status.online if status == 1 else discord.Status.do_not_disturb
+    choiceActivity = discord.Activity(type=discord.ActivityType.playing, name="Destiny 2") if status == 1 else discord.Activity(type=discord.ActivityType.watching, name="WARTUNGSARBEITEN")
+
+    await client.change_presence(status=choiceStatus, activity=choiceActivity)
     client.mongo = MongoClient(str(client.connection_url))
     client.ticket = client.mongo["Die_Botin"]["Tickets"]
     print(f'DATENBANK AKTIV\n<-->\nONLINE\n<-->\n{client.user}\n<-->')

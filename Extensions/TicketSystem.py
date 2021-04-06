@@ -157,6 +157,20 @@ class TicketSystem(commands.Cog):
                 pass
             await Utils.Ticket.delete_Ticket(self, ctx.author)
 
+    @commands.command()
+    @commands.cooldown(1, 300, commands.BucketType.user)
+    async def report(self, ctx, user: discord.Member):
+        await Utils.Spielverderber.file_report(self, user, 1)
+
+        embed = discord.Embed(
+            title="Report",
+            colour=discord.Colour(Utils.Farbe.Light_Blue),
+            description=f"Der Spieler: **{user.name}** wurde erfolgreich gemeldet.\n_Danke, dass du die Community sauber hältst!_"
+        )
+        embed.set_thumbnail(url=self.client.user.avatar_url)
+
+        await Utils.CoSe.se_ctx(ctx, embed, 10)
+
 
 # Cog Finishing
 

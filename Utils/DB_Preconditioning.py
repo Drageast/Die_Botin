@@ -1,4 +1,6 @@
 from .ErrorHandler import DatabasePreconditioning
+from datetime import date
+import discord
 
 
 class Ticket:
@@ -86,6 +88,51 @@ class Ticket:
             return serialized2
 
 
+class Spielverderber:
+    def __init__(self, client):
+        self.client = client
+
+    async def file_report(self, user, mode: int):
+
+        _report = await Spielverderber.get_report(self, user)
+
+        if _report is None:
+            today = date.today()
+
+            data = \
+                {
+                    "_id": user.id,
+                    "ReportCount": 1,
+                    "FirstReport": today.strftime("%d.%m.%y")
+                }
+
+            self.client.Spielverderber.insert_one(data)
+
+        else:
+
+            OldCount = int(_report.reports)
+            NewCount = OldCount + 1 if mode == 1 else OldCount - 1
+
+            self.client.Spielverderber.update_one({"_id": user.id}, {"$set": {f"ReportCount": int(NewCount)}})
+
+
+
+
+    async def get_report(self, user):
+
+        _report = self.client.Spielverderber.find_one({"_id": user.id})
+
+        if _report is None:
+            return None
+
+        else:
+
+            serialized = serialization2(user.id)
+            serialized.reports = _report["ReportCount"]
+            serialized.first_report = _report["FirstReport"]
+
+            return serialized
+
 # Object Oriented Class
 
 
@@ -98,3 +145,11 @@ class serialization:
     NeededParticipants = None
     MID = None
     CID = None
+
+
+class serialization2:
+    def __init__(self,_id):
+        self._id = _id
+
+    reports = None
+    first_report = None

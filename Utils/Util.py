@@ -2,7 +2,7 @@
 import asyncio
 import discord
 import yaml
-from .DB_Preconditioning import Ticket
+from .DB_Preconditioning import Ticket, Spielverderber
 
 
 class YamlContainerManagement:
@@ -24,7 +24,7 @@ class YamlContainerManagement:
 
 # SMOOTH_SEND
 
-class TimeSend:
+class CoSe:
 
     @staticmethod
     async def se_ctx(ctx, embed, seconds=None):
@@ -149,10 +149,18 @@ class TicketReactor:
                 await m.remove_reaction(reaction, user)
                 return
 
+            _data = await Spielverderber.get_report(self, user)
+
+            a1 = ""
+            a2 = f"\nAchtung! Der Spieler wurde schon {_data.reports} mal als Spielverderber gemeldet! (Die erste Meldung war: {_data.first_report})"
+
+            a = a1 if _data is None else a2
+
+
             embed = discord.Embed(
                 title=f"Anmeldung bei: {data.activity}",
                 colour=discord.Colour(Farbe.Light_Blue),
-                description=f"Der Discord Nutzer: `{user.name}` hat sich mit dem **InGame Namen**: `{r.content}` gemeldet."
+                description=f"Der Discord Nutzer: `{user.name}` hat sich mit dem **InGame Namen**: `{r.content}` angemeldet.{a}"
             )
             await sender.send(embed=embed)
 
@@ -169,15 +177,20 @@ class TicketReactor:
             embed2 = discord.Embed(
                 title=f"Anmeldung bei: {data.activity}",
                 colour=discord.Colour(Farbe.Dark_Blue),
-                description=f"Die gewünschte Spielerzahl ist erreicht."
+                description=f"Die gewünschte Spielerzahl ist erreicht.\nWenn während der Aktivität sich jemand daneben"
+                            f"benimmt, melde den Spieler mit `!report @Spieler`. _Bitte melde aber nur, wenn die Person negativ auffällt._"
             )
+            test = len(discordName)
+            for i in range(test):
+                embed2.add_field(name=f"{discordName[i]}", value=f"{InGameName[i]}")
 
             await user_.send(embed=embed2)
 
         embed2 = discord.Embed(
             title=f"Anmeldung bei: {data.activity}",
             colour=discord.Colour(Farbe.Dark_Blue),
-            description=f"{sender.mention} die gewünschte Spielerzahl ist erreicht."
+            description=f"{sender.mention} die gewünschte Spielerzahl ist erreicht.\nWenn während der Aktivität sich jemand daneben"
+                        f"benimmt, melde den Spieler mit `!report @Spieler`. _Bitte melde aber nur, wenn die Person negativ auffällt._"
         )
 
         test = len(discordName)

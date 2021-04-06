@@ -155,7 +155,7 @@ class ErrorHandling(commands.Cog):
                 )
                 embed.set_thumbnail(url=self.client.user.avatar_url)
 
-                await Utils.TimeSend.se_ctx(ctx, embed, 30)
+                await Utils.CoSe.se_ctx(ctx, embed, 30)
 
 
             elif command == ctx.command:
@@ -167,7 +167,7 @@ class ErrorHandling(commands.Cog):
                 )
                 embed.set_thumbnail(url=self.client.user.avatar_url)
 
-                await Utils.TimeSend.se_ctx(ctx, embed, 30)
+                await Utils.CoSe.se_ctx(ctx, embed, 30)
 
             else:
 
@@ -183,7 +183,7 @@ class ErrorHandling(commands.Cog):
                 )
                 embed.set_thumbnail(url=self.client.user.avatar_url)
 
-                await Utils.TimeSend.se_ctx(ctx, embed, 10)
+                await Utils.CoSe.se_ctx(ctx, embed, 10)
 
 
 # Cog Finishing

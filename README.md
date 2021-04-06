@@ -40,3 +40,9 @@ und folgen sie den Anweisungen: `How to connect to your application`. Den erhalt
 Sie können für einen Kanal ihrer Wahl einen Webhook anlegen. Dort sendet der Bot bei ungeklärter korrumption einen 
 ausführlichen Fehlerbericht. Wenn sie einen Webhook erstellt haben, können sie einen Link zu diesem kopieren,
 diesen fügen sie in dem korrespondierendem Bereich in der `config.yaml` - Datei ein.
+
+##### Code - Veränderung
+
+Wenn sie möchten, könne sie den Code verändern, dies ist relativ einfach gestaltet, da der Bot größtenteils 
+Objekt-Orientiert geschrieben ist und mit einem Python-Package ausgestattet ist, wodurch Funktionen von überall 
+genutzt werden, solange die Funktion in der `__init__.py` - Datei gekennzeichnet ist.

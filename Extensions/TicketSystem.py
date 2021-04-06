@@ -111,15 +111,15 @@ class TicketSystem(commands.Cog):
         response1 = inhalt1 if inhaltUhrzeit is not None else r3.content
         colour = Utils.Farbe.TezzQu if ctx.author.id == "336549722464452620" else Utils.Farbe.Light_Blue
 
-        data = await Utils.Ticket.create_Ticket(self, ctx.author, choice, int(r2.content), response1, 1)
+        data = await Utils.Ticket.create_Ticket(self, ctx.author, choice, int(r2.content), response1, 2)
 
 
         embed = discord.Embed(
             title=f"Spieler suche: {choice}",
             colour=discord.Colour(colour),
-            description=f"{response1}"
+            description=f"{data.activity}"
         )
-        embed.add_field(name="Benötigte Spieler:", value=f"{r2.content}")
+        embed.add_field(name="Benötigte Spieler:", value=f"{data.NeededParticipants}")
         embed.set_footer(text=f"Gesucht von: {ctx.author.name}", icon_url=ctx.author.avatar_url)
         if inhaltUhrzeit is not None:
             embed.add_field(name="Startzeit:", value=f"{inhaltUhrzeit}")
@@ -142,22 +142,20 @@ class TicketSystem(commands.Cog):
         data = await Utils.Ticket.get_Ticket(self, ctx.author)
         await ctx.message.delete()
 
-        if data["IDs"]["MessageID"] is None or data["IDs"]["ChannelID"] is None or data["IDs"]["MessageID"] == data["IDs"]["ChannelID"]:
+        if data.MID is None or data.CID is None:
             await Utils.Ticket.delete_Ticket(self, ctx.author)
 
         else:
 
-            messageID = data["IDs"]["MessageID"]
-            channelid = data["IDs"]["ChannelID"]
-
-            channel = self.client.get_channel(channelid)
-            m = await channel.fetch_message(messageID)
+            channel = self.client.get_channel(data.CID)
+            m = await channel.fetch_message(data.MID)
 
             try:
                 await m.delete()
             except:
                 pass
             await Utils.Ticket.delete_Ticket(self, ctx.author)
+
 
 # Cog Finishing
 

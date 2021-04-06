@@ -7,7 +7,6 @@ class Ticket:
 
     async def create_Ticket(self, user, activity, neededParticipants: int, description, indicator: int):
 
-
         exTicket = self.client.ticket.find_one({"_id": user.id})
 
         if exTicket is not None:
@@ -26,7 +25,14 @@ class Ticket:
 
             self.client.ticket.insert_one(data)
 
-            return data if indicator == 1 else None
+            serialized1 = serialization(data["_id"])
+            serialized1.NeededParticipants = data["NeededParticipants"]
+            serialized1.activity = data["Activity"]
+            serialized1.description = data["Description"]
+            serialized1.MID = None
+            serialized1.CID = None
+
+            return data if indicator == 1 else serialized1
 
     async def delete_Ticket(self, user):
 
@@ -38,7 +44,6 @@ class Ticket:
         else:
 
             self.client.ticket.delete_one({"_id": user.id})
-
 
     async def edit_Ticket(self, user, edit, index: int):
 
@@ -65,9 +70,31 @@ class Ticket:
         if exTicket is None:
             raise DatabasePreconditioning("Das Ticket existiert nicht!")
 
-        elif exTicket["IDs"]["MessageID"] is None:
+        elif exTicket["IDs"]["MessageID"] is None or exTicket["IDs"]["ChannelID"] is None:
             raise DatabasePreconditioning("Das Ticket besitzt keine ID!")
 
         else:
+            data = exTicket
 
-            return exTicket
+            serialized2 = serialization(data["_id"])
+            serialized2.NeededParticipants = data["NeededParticipants"]
+            serialized2.activity = data["Activity"]
+            serialized2.description = data["Description"]
+            serialized2.MID = data["IDs"]["MessageID"]
+            serialized2.CID = data["IDs"]["ChannelID"]
+
+            return serialized2
+
+
+# Object Oriented Class
+
+
+class serialization:
+    def __init__(self, _id):
+        self._id = _id
+
+    description = None
+    activity = None
+    NeededParticipants = None
+    MID = None
+    CID = None

@@ -119,28 +119,21 @@ class TicketReactor:
 
         discordName = []
         InGameName = []
-        mixed = []
 
         x = 0
 
         data = await Ticket.get_Ticket(self, user)
 
-        senderID = data["_id"]
-        thema = data["Activity"]
-        messageID = data["IDs"]["MessageID"]
-        channelid = data["IDs"]["ChannelID"]
-        neededParticipants = data["NeededParticipants"]
-
-        channel = self.client.get_channel(channelid)
-        m = await channel.fetch_message(messageID)
+        channel = self.client.get_channel(data.CID)
+        m = await channel.fetch_message(data.MID)
 
 
         def check(reaction, user):
             return user == user and str(reaction.emoji) == "✅"
 
-        sender = await self.client.fetch_user(senderID)
+        sender = await self.client.fetch_user(data._id)
 
-        while x < int(neededParticipants):
+        while x < int(data.NeededParticipants):
             reaction, user = await self.client.wait_for("reaction_add", check=check)
 
             embed2 = discord.Embed(
@@ -157,7 +150,7 @@ class TicketReactor:
                 return
 
             embed = discord.Embed(
-                title=f"Anmeldung bei: {thema}",
+                title=f"Anmeldung bei: {data.activity}",
                 colour=discord.Colour(Farbe.Light_Blue),
                 description=f"Der Discord Nutzer: `{user.name}` hat sich mit dem **InGame Namen**: `{r.content}` gemeldet."
             )
@@ -174,7 +167,7 @@ class TicketReactor:
         for user_ in discordName:
 
             embed2 = discord.Embed(
-                title=f"Anmeldung bei: {thema}",
+                title=f"Anmeldung bei: {data.activity}",
                 colour=discord.Colour(Farbe.Dark_Blue),
                 description=f"Die gewünschte Spielerzahl ist erreicht."
             )
@@ -182,7 +175,7 @@ class TicketReactor:
             await user_.send(embed=embed2)
 
         embed2 = discord.Embed(
-            title=f"Anmeldung bei: {thema}",
+            title=f"Anmeldung bei: {data.activity}",
             colour=discord.Colour(Farbe.Dark_Blue),
             description=f"{sender.mention} die gewünschte Spielerzahl ist erreicht."
         )

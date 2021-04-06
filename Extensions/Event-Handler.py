@@ -32,7 +32,7 @@ class EventHandler(commands.Cog):
             colour=discord.Colour(Utils.Farbe.Welcome_Blue),
             description=f"Hallo {user.mention} willkommen auf dem Discord Server:\n**{user.guild.name}** !\nUm Spieler zu suchen, gebe `!ct` in einem Kanal ein, "
                         f"der Commands Akzeptiert. Um ein Ticket vorzeitig zu löschen, gebe `!dt` ein. Der Rest ist selbsterklärend.\nJe nach dem, was du suchst, "
-                        f"schaue in der Kategorie: _Spielersuche_ nach der jeweiligen Kategorie. Um bei einer Aktivität teilzunehmen, drücke auf die Reaktion (✅). "
+                        f"schaue in der Kategorie: _Spielersuche_ nach der gewünschten Aktivität in den Reitern. Um bei einer Aktivität teilzunehmen, drücke auf die Reaktion (✅). "
                         f"Der Rest ist wieder selbsterklärend.\n**Viel Spaß!**"
         )
         embed.set_thumbnail(url=self.client.user.avatar_url)

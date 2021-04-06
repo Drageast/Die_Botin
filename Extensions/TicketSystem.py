@@ -63,6 +63,7 @@ class TicketSystem(commands.Cog):
             description=f"Benenne nun in einer neuen Nachricht, **wie viele Spieler du benötigst**.\nBeispiel: *3*"
         )
         await m1.edit(embed=embed)
+        await m1.clear_reactions()
 
         try:
 
@@ -127,6 +128,7 @@ class TicketSystem(commands.Cog):
 
         message = await Utils.ChannelSending.get_channel(ctx.author, embed, choice.lower())
         await message.add_reaction("✅")
+        await message.add_reaction("❌")
         await asyncio.sleep(1)
 
         await m1.delete()
@@ -160,6 +162,7 @@ class TicketSystem(commands.Cog):
     @commands.command()
     @commands.cooldown(1, 300, commands.BucketType.user)
     async def report(self, ctx, user: discord.Member):
+
         await Utils.Spielverderber.file_report(self, user, 1)
 
         embed = discord.Embed(

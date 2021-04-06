@@ -119,6 +119,7 @@ class TicketReactor:
 
         discordName = []
         InGameName = []
+        control = []
 
         x = 0
 
@@ -129,45 +130,76 @@ class TicketReactor:
 
 
         def check(reaction, user):
-            return user == user and str(reaction.emoji) == "✅"
+            return user == user and str(reaction.emoji) == "✅" or "❌"
 
         sender = await self.client.fetch_user(data._id)
 
         while x < int(data.NeededParticipants):
             reaction, user = await self.client.wait_for("reaction_add", check=check)
 
-            embed2 = discord.Embed(
-                title="Ich habe dich angemeldet!",
-                colour=discord.Colour(Farbe.Light_Blue),
-                description=f"Der Spieler `{sender.name}` benötigt noch deinen Gamertag. Bitte Antworte mit deinem Gamertag."
-            )
+            if str(reaction.emoji) == "✅":
+                embed2 = discord.Embed(
+                    title="Ich habe dich angemeldet!",
+                    colour=discord.Colour(Farbe.Light_Blue),
+                    description=f"Der Spieler `{sender.name}` benötigt noch deinen Gamertag. Bitte Antworte mit deinem Gamertag."
+                )
 
-            await user.send(embed=embed2)
-            try:
-                r = await TicketReactor.wait_message(self, user)
-            except asyncio.TimeoutError:
-                await m.remove_reaction(reaction, user)
-                return
+                await user.send(embed=embed2)
+                try:
+                    r = await TicketReactor.wait_message(self, user)
+                except asyncio.TimeoutError:
+                    await m.remove_reaction(reaction, user)
+                    return
 
-            _data = await Spielverderber.get_report(self, user)
+                _data = await Spielverderber.get_report(self, user)
 
-            a1 = ""
-            a2 = f"\nAchtung! Der Spieler wurde schon {_data.reports} mal als Spielverderber gemeldet! (Die erste Meldung war: {_data.first_report})"
-
-            a = a1 if _data is None else a2
+                a = "" if _data is None else f"\nAchtung! Der Spieler wurde schon {_data.reports} mal als Spielverderber gemeldet! (Die erste Meldung war: {_data.first_report})"
 
 
-            embed = discord.Embed(
-                title=f"Anmeldung bei: {data.activity}",
-                colour=discord.Colour(Farbe.Light_Blue),
-                description=f"Der Discord Nutzer: `{user.name}` hat sich mit dem **InGame Namen**: `{r.content}` angemeldet.{a}"
-            )
-            await sender.send(embed=embed)
+                embed = discord.Embed(
+                    title=f"Anmeldung bei: {data.activity}",
+                    colour=discord.Colour(Farbe.Light_Blue),
+                    description=f"Der Discord Nutzer: `{user.name}` hat sich mit dem **InGame Namen**: `{r.content}` angemeldet.{a}"
+                )
+                await sender.send(embed=embed)
 
-            discordName.append(user)
-            InGameName.append(r.content)
+                discordName.append(user)
+                InGameName.append(r.content)
+                control.append(user.id)
 
-            x += 1
+                x += 1
+
+            elif str(reaction.emoji) == "❌":
+
+                if control.count(user.id) >= 1:
+
+                    index = int(control.index(user.id))
+
+                    del discordName[index]
+                    del InGameName[index]
+                    del control[index]
+
+                    embed = discord.Embed(
+                        title=f"Abmeldung bei: {data.activity}",
+                        colour=discord.Colour(Farbe.Dark_Blue),
+                        description=f"Der Discord Nutzer: `{user.name}` hat sich abgemeldet."
+                    )
+
+                    await sender.send(embed=embed)
+                    try:
+                        await m.remove_reaction("✅", user)
+                        await m.remove_reaction(reaction, user)
+                    except:
+                        pass
+
+                    x -= 1
+
+                else:
+
+                    try:
+                        await m.remove_reaction(reaction, user)
+                    except:
+                        pass
 
         await m.delete()
         await Ticket.delete_Ticket(self, ctx.author)
@@ -198,6 +230,8 @@ class TicketReactor:
             embed2.add_field(name=f"{discordName[i]}", value=f"{InGameName[i]}")
 
         await sender.send(embed=embed2)
+
+
 
 
 class ChannelSending:

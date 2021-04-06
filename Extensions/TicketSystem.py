@@ -119,6 +119,7 @@ class TicketSystem(commands.Cog):
             colour=discord.Colour(colour),
             description=f"{data.activity}"
         )
+        embed.set_thumbnail(url=Utils.YamlContainerManagement.get_yamlCGL("Bilder", choice))
         embed.add_field(name="Benötigte Spieler:", value=f"{data.NeededParticipants}")
         embed.set_footer(text=f"Gesucht von: {ctx.author.name}", icon_url=ctx.author.avatar_url)
         if inhaltUhrzeit is not None:

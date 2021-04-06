@@ -28,21 +28,35 @@ den Präfix in dem korrespondierendem Bereich ändern. Darauf hinaus, fügen sie
 hinzu und setzten sie diese in der richtigen formatierung in den Bereich: 
 `Variablen: UniversalEmoji`. *Die formatierung erreichen sie, indem sie vor dem Emoji ein* \ *schreiben und dies absenden.*
 
-#### Mongo - Datenbank:
+##### Mongo - Datenbank:
 
 Stellen Sie sicher, dass Sie ein gültiges [MongoDB-Konto](https://www.mongodb.com/) besitzen. Erstellen sie daraufhin ein `Cluster`
 und folgen sie den Anweisungen: `How to connect to your application`. Den erhaltenen Link fügen sie in der
 `config.yaml` - Datei im passendem Bereich ein. Je nachdem, wie ihre `Collection` heißt, müssen sie in dem Skrip:
 `Main.py` in **Zeile 27** unter `client.mongo["Cluster Name"]["Colection Name"]` die Namen anpassen.
 
-##### Webhook - Fehlerbewältigung
+##### Webhook - Fehlerbewältigung:
 
 Sie können für einen Kanal ihrer Wahl einen Webhook anlegen. Dort sendet der Bot bei ungeklärter korrumption einen 
 ausführlichen Fehlerbericht. Wenn sie einen Webhook erstellt haben, können sie einen Link zu diesem kopieren,
 diesen fügen sie in dem korrespondierendem Bereich in der `config.yaml` - Datei ein.
 
-##### Code - Veränderung
+##### Code - Veränderung:
 
 Wenn sie möchten, könne sie den Code verändern, dies ist relativ einfach gestaltet, da der Bot größtenteils 
 Objekt-Orientiert geschrieben ist und mit einem Python-Package ausgestattet ist, wodurch Funktionen von überall 
 genutzt werden, solange die Funktion in der `__init__.py` - Datei gekennzeichnet ist.
+
+### Funktionen:
+
+##### Ticket - System:
+
+Der Bot besitzt ein Ticket-System, welches es sehr einfach macht, Spieler für 
+eine Aktivität zu suchen. Der Befehl zum Starten lautet: `!ct`, der Rest ist selbsterklärend.
+Mit `!dt` können sie auch das Ticket löschen, selbst wenn es du noch nicht alle Spieler gefunden hast.
+
+##### Report - System
+
+Wenn Spieler während der Aktivität verlassen, beleidigen oder sonstige unangebrachte 
+Dinge tun, kann man den Spieler melden (Befehl: `!report @Spieler`), das führt dazu, dass wenn der Spieler sich in ein Ticket
+einträgt, der Ticket-Ersteller eine Warnung über den Spieler erhält.

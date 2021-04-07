@@ -77,7 +77,6 @@ class Moderation(commands.Cog):
             else:
                 raise commands.BadArgument(f"{Anzahl} ist nicht gültig, bitte gebe einen Integer(Zahl) oder * an.")
 
-
 # Cog Finishing
 
 

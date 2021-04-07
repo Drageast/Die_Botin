@@ -2,7 +2,7 @@
 import asyncio
 import discord
 import yaml
-from .DB_Preconditioning import Ticket, Spielverderber
+from .Database_Preconditioning import DBPreconditioning
 
 
 class YamlContainerManagement:
@@ -24,7 +24,7 @@ class YamlContainerManagement:
 
 # SMOOTH_SEND
 
-class CoSe:
+class TimeSend:
 
     @staticmethod
     async def se_ctx(ctx, embed, seconds=None):
@@ -116,58 +116,73 @@ class TicketReactor:
         return new_message
 
     async def ListenAndReact(self, ctx, user):
-
-        discordName = []
-        InGameName = []
+        DiscordUser = []
+        GamerTag = []
         control = []
-
         x = 0
 
-        data = await Ticket.get_Ticket(self, user)
+        data = DBPreconditioning.GET_Ticket(self, user)
 
-        channel = self.client.get_channel(data.CID)
-        m = await channel.fetch_message(data.MID)
+        channel = self.client.get_channel(data.ChannelID)
+        m = await channel.fetch_message(data.MessageID)
 
 
         def check(reaction, user):
-            return user == user and str(reaction.emoji) == "✅" or "❌"
+            return user == user and str(reaction.emoji) == "✅" or "❌" or "🛑"
 
         sender = await self.client.fetch_user(data._id)
 
-        while x < int(data.NeededParticipants):
+        while x < int(data.RequiredParticipants):
             reaction, user = await self.client.wait_for("reaction_add", check=check)
 
             if str(reaction.emoji) == "✅":
-                embed2 = discord.Embed(
-                    title="Ich habe dich angemeldet!",
-                    colour=discord.Colour(Farbe.Light_Blue),
-                    description=f"Der Spieler `{sender.name}` benötigt noch deinen Gamertag. Bitte Antworte mit deinem Gamertag."
-                )
 
-                await user.send(embed=embed2)
-                try:
-                    r = await TicketReactor.wait_message(self, user)
-                except asyncio.TimeoutError:
+                _data = DBPreconditioning.GET_Uccount(self, user)
+
+                if _data.TicketEntry is False:
+
+                    embed2 = discord.Embed(
+                        title="-Anmeldung-",
+                        colour=discord.Colour(Farbe.Light_Blue),
+                        description=f"Der Spieler `{sender.name}` benötigt noch deinen Gamertag. Bitte Antworte mit deinem Gamertag."
+                    )
+
+                    await user.send(embed=embed2)
+                    try:
+                        r = await TicketReactor.wait_message(self, user)
+                    except asyncio.TimeoutError:
+                        await m.remove_reaction(reaction, user)
+                        return
+
+                    a = "" if _data.Reports is None else f"\n_Achtung! Der Spieler wurde schon {_data.Reports} mal als Spielverderber gemeldet!_"
+
+
+                    embed = discord.Embed(
+                        title=f"-Anmeldung-",
+                        colour=discord.Colour(Farbe.Light_Blue),
+                        description=f"Der Discord Nutzer: `{user.name}` hat sich mit dem **InGame Namen**: `{r.content}` angemeldet.{a}"
+                    )
+                    await sender.send(embed=embed)
+
+                    DiscordUser.append(user)
+                    GamerTag.append(r.content)
+                    control.append(user.id)
+
+                    DBPreconditioning.POST_Uccount(self, user, TicketEntry=True)
+
+                    x += 1
+
+                else:
+
                     await m.remove_reaction(reaction, user)
-                    return
 
-                _data = await Spielverderber.get_report(self, user)
-
-                a = "" if _data is None else f"\nAchtung! Der Spieler wurde schon {_data.reports} mal als Spielverderber gemeldet! (Die erste Meldung war: {_data.first_report})"
-
-
-                embed = discord.Embed(
-                    title=f"Anmeldung bei: {data.activity}",
-                    colour=discord.Colour(Farbe.Light_Blue),
-                    description=f"Der Discord Nutzer: `{user.name}` hat sich mit dem **InGame Namen**: `{r.content}` angemeldet.{a}"
-                )
-                await sender.send(embed=embed)
-
-                discordName.append(user)
-                InGameName.append(r.content)
-                control.append(user.id)
-
-                x += 1
+                    embed2 = discord.Embed(
+                        title="Du kannst dich nicht Anmelden!",
+                        colour=discord.Colour(Farbe.Dark_Blue),
+                        description=f"Du bist schon in einem Ticket eingetragen!"
+                                    f"\nWenn du dies für einen Fehler in der Datenbank hältst, gebe: `!debug bool` ein."
+                    )
+                    await user.send(embed=embed2)
 
             elif str(reaction.emoji) == "❌":
 
@@ -175,12 +190,12 @@ class TicketReactor:
 
                     index = int(control.index(user.id))
 
-                    del discordName[index]
-                    del InGameName[index]
+                    del DiscordUser[index]
+                    del GamerTag[index]
                     del control[index]
 
                     embed = discord.Embed(
-                        title=f"Abmeldung bei: {data.activity}",
+                        title=f"-Abmeldung-",
                         colour=discord.Colour(Farbe.Dark_Blue),
                         description=f"Der Discord Nutzer: `{user.name}` hat sich abgemeldet."
                     )
@@ -192,6 +207,8 @@ class TicketReactor:
                     except:
                         pass
 
+                    DBPreconditioning.POST_Uccount(self, user)
+
                     x -= 1
 
                 else:
@@ -201,33 +218,50 @@ class TicketReactor:
                     except:
                         pass
 
-        await m.delete()
-        await Ticket.delete_Ticket(self, ctx.author)
+            elif str(reaction.emoji) == "🛑":
+                if user == ctx.author:
+                    for user_ in DiscordUser:
+                        DBPreconditioning.POST_Uccount(self, user_)
+                        embed2 = discord.Embed(
+                            title=f"-Anmeldung-",
+                            colour=discord.Colour(Farbe.Dark_Blue),
+                            description=f"Der Ticket-Ersteller hat das Ticket frühzeitig abgebrochen!"
+                        )
+                        await user_.send(embed=embed2)
+                    await DBPreconditioning.DEL_Ticket(self, ctx.author)
+                    break
+        try:
+            await m.delete()
+        except:
+            return
+        await DBPreconditioning.DEL_Ticket(self, ctx.author)
+        DBPreconditioning.POST_Uccount(self, ctx.author)
 
-        for user_ in discordName:
+        for user_ in DiscordUser:
 
             embed2 = discord.Embed(
-                title=f"Anmeldung bei: {data.activity}",
+                title=f"-Anmeldung-",
                 colour=discord.Colour(Farbe.Dark_Blue),
-                description=f"Die gewünschte Spielerzahl ist erreicht.\nWenn während der Aktivität sich jemand daneben"
+                description=f"Die gewünschte Spielerzahl ist erreicht.\n\nWenn während der Aktivität sich jemand daneben"
                             f"benimmt, melde den Spieler mit `!report @Spieler`. _Bitte melde aber nur, wenn die Person negativ auffällt._"
             )
-            test = len(discordName)
+            test = len(control)
             for i in range(test):
-                embed2.add_field(name=f"{discordName[i]}", value=f"{InGameName[i]}")
+                embed2.add_field(name=f"{DiscordUser[i]}", value=f"{GamerTag[i]}")
 
             await user_.send(embed=embed2)
+            DBPreconditioning.POST_Uccount(self, user_)
 
         embed2 = discord.Embed(
-            title=f"Anmeldung bei: {data.activity}",
+            title=f"-Anmeldung-",
             colour=discord.Colour(Farbe.Dark_Blue),
-            description=f"{sender.mention} die gewünschte Spielerzahl ist erreicht.\nWenn während der Aktivität sich jemand daneben"
+            description=f"{sender.mention} die gewünschte Spielerzahl ist erreicht.\n\nWenn während der Aktivität sich jemand daneben"
                         f"benimmt, melde den Spieler mit `!report @Spieler`. _Bitte melde aber nur, wenn die Person negativ auffällt._"
         )
 
-        test = len(discordName)
+        test = len(control)
         for i in range(test):
-            embed2.add_field(name=f"{discordName[i]}", value=f"{InGameName[i]}")
+            embed2.add_field(name=f"{DiscordUser[i]}", value=f"{GamerTag[i]}")
 
         await sender.send(embed=embed2)
 

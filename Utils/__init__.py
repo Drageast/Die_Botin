@@ -1,3 +1,3 @@
 from .ErrorHandler import *
-from .DB_Preconditioning import Ticket, Spielverderber
+from .Database_Preconditioning import DBPreconditioning
 from .Util import *

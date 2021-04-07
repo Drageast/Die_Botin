@@ -29,7 +29,7 @@ async def on_ready():
     await client.change_presence(status=choiceStatus, activity=choiceActivity)
     client.mongo = MongoClient(str(client.connection_url))
     client.ticket = client.mongo["Die_Botin"]["Tickets"]
-    client.Spielverderber = client.mongo["Die_Botin"]["Spielverderber"]
+    client.Uccount = client.mongo["Die_Botin"]["Uccount"]
     print(f'DATENBANK AKTIV\n<-->\nONLINE\n<-->\n{client.user}\n<-->')
 
 
@@ -53,4 +53,3 @@ def token_output():
 
 
 client.run(token_output())
-

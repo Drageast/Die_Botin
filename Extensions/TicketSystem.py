@@ -22,7 +22,7 @@ class TicketSystem(commands.Cog):
 
     @commands.guild_only()
     @commands.command(aliases=["ct"])
-    async def createTicket(self, ctx):
+    async def CreateTicket(self, ctx):
 
         await ctx.message.delete()
         Vorhut = Utils.YamlContainerManagement.get_yamlCGL("Variablen", "UniversalEmoji", "Vorhut")
@@ -36,7 +36,7 @@ class TicketSystem(commands.Cog):
             description=f"Bitte klicke unten auf das Symbol, passend zu der Aktivität.\n({Raid}) **Raid**, ({Vorhut}) **Vorhut**, ({Gambit}) **Gambit**, ({Schmelztiegel}) **Schmelztiegel**"
         )
 
-        def check(reaction, user):
+        def check1(reaction, user):
             return user == ctx.author and str(reaction.emoji) in [Vorhut, Schmelztiegel, Gambit, Raid]
 
         m1 = await ctx.send(embed=embed)
@@ -46,7 +46,7 @@ class TicketSystem(commands.Cog):
         await m1.add_reaction(Schmelztiegel)
 
         try:
-            reaction, user = await self.client.wait_for("reaction_add", timeout=120, check=check)
+            reaction, user = await self.client.wait_for("reaction_add", timeout=120, check=check1)
 
             choice = "Vorhut" if str(reaction.emoji) == Vorhut else ("Schmelztiegel" if str(reaction.emoji) == Schmelztiegel else ("Gambit" if str(reaction.emoji) == Gambit else "Raid"))
 
@@ -60,15 +60,26 @@ class TicketSystem(commands.Cog):
         embed = discord.Embed(
             title="Ticket",
             colour=discord.Colour(Utils.Farbe.Light_Blue),
-            description=f"Benenne nun in einer neuen Nachricht, **wie viele Spieler du benötigst**.\nBeispiel: *3*"
+            description=f"Bitte klicke unten auf das Symbol, **passend zu der Anzahl, der benötigten Spieler**."
         )
         await m1.edit(embed=embed)
         await m1.clear_reactions()
+        await m1.add_reaction("1️⃣")
+        await m1.add_reaction("2️⃣")
+        await m1.add_reaction("3️⃣")
+        await m1.add_reaction("4️⃣")
+        await m1.add_reaction("5️⃣")
+
+        def check2(reaction, user):
+            return user == ctx.author and str(reaction.emoji) in ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"]
 
         try:
+            reaction, user = await self.client.wait_for("reaction_add", timeout=120, check=check2)
 
-            r2 = await self.wait_message(ctx)
-            await r2.delete()
+            Anzahl = 1 if str(reaction.emoji) == "1️⃣" else (
+                2 if str(reaction.emoji) == "2️⃣" else (
+                    3 if str(reaction.emoji) == "3️⃣" else (4 if str(reaction.emoji) == "4️⃣" else 5)))
+
         except asyncio.TimeoutError:
             try:
                 await m1.delete()
@@ -83,6 +94,7 @@ class TicketSystem(commands.Cog):
                         f"soll. Dazu Füge nach der Beschreibung ein `= Uhrzeit` ein._\nBeispiel: *Tiefsteinkrypta Fresh mit Erfahrung = 13:00*"
         )
         await m1.edit(embed=embed)
+        await m1.clear_reactions()
 
         try:
 
@@ -112,16 +124,13 @@ class TicketSystem(commands.Cog):
         response1 = inhalt1 if inhaltUhrzeit is not None else r3.content
         colour = Utils.Farbe.TezzQu if ctx.author.id == "336549722464452620" else Utils.Farbe.Light_Blue
 
-        data = await Utils.Ticket.create_Ticket(self, ctx.author, choice, int(r2.content), response1, 2)
-
-
         embed = discord.Embed(
-            title=f"Spieler suche: {choice}",
+            title=f"Spielersuche",
             colour=discord.Colour(colour),
-            description=f"{data.activity}"
+            description=f"{response1}"
         )
         embed.set_thumbnail(url=Utils.YamlContainerManagement.get_yamlCGL("Bilder", choice))
-        embed.add_field(name="Benötigte Spieler:", value=f"{data.NeededParticipants}")
+        embed.add_field(name="Benötigte Spieler:", value=f"{Anzahl}")
         embed.set_footer(text=f"Gesucht von: {ctx.author.name}", icon_url=ctx.author.avatar_url)
         if inhaltUhrzeit is not None:
             embed.add_field(name="Startzeit:", value=f"{inhaltUhrzeit}")
@@ -129,41 +138,21 @@ class TicketSystem(commands.Cog):
         message = await Utils.ChannelSending.get_channel(ctx.author, embed, choice.lower())
         await message.add_reaction("✅")
         await message.add_reaction("❌")
+        await message.add_reaction("🛑")
         await asyncio.sleep(1)
 
         await m1.delete()
 
-        await Utils.Ticket.edit_Ticket(self, ctx.author, message.id, 1)
-        await Utils.Ticket.edit_Ticket(self, ctx.author, message.channel.id, 2)
+        Utils.DBPreconditioning.POST_Ticket(self, ctx.author, RequiredParticipants=Anzahl, ChannelID=message.channel.id, MessageID=message.id)
 
         await Utils.TicketReactor.ListenAndReact(self, ctx, ctx.author)
 
-    @commands.guild_only()
-    @commands.command(aliases=["dt"])
-    async def deleteTicket(self, ctx):
-
-        data = await Utils.Ticket.get_Ticket(self, ctx.author)
-        await ctx.message.delete()
-
-        if data.MID is None or data.CID is None:
-            await Utils.Ticket.delete_Ticket(self, ctx.author)
-
-        else:
-
-            channel = self.client.get_channel(data.CID)
-            m = await channel.fetch_message(data.MID)
-
-            try:
-                await m.delete()
-            except:
-                pass
-            await Utils.Ticket.delete_Ticket(self, ctx.author)
 
     @commands.command()
     @commands.cooldown(1, 300, commands.BucketType.user)
-    async def report(self, ctx, user: discord.Member):
+    async def Report(self, ctx, user: discord.Member):
 
-        await Utils.Spielverderber.file_report(self, user, 1)
+        Utils.DBPreconditioning.POST_Uccount(self, user, Reports=1)
 
         embed = discord.Embed(
             title="Report",
@@ -172,7 +161,7 @@ class TicketSystem(commands.Cog):
         )
         embed.set_thumbnail(url=self.client.user.avatar_url)
 
-        await Utils.CoSe.se_ctx(ctx, embed, 10)
+        await Utils.TimeSend.se_ctx(ctx, embed, 10)
 
 
 # Cog Finishing

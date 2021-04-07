@@ -6,6 +6,7 @@ import asyncio
 # Utils
 import Utils
 
+
 # Cog Initialising
 
 
@@ -16,13 +17,15 @@ class EventHandler(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_remove(self, user: discord.Member):
-
-        x = self.client.ticket.find_one({"_id": user.id})
-
-        if x is None:
+        try:
+            await Utils.DBPreconditioning.DEL_Ticket(self, user)
+        except:
             pass
-        else:
-            await Utils.Ticket.delete_Ticket(self, user)
+        try:
+            await Utils.DBPreconditioning.DEL_Uccount(self, user)
+        except:
+            pass
+
 
     @commands.Cog.listener()
     async def on_member_join(self, user: discord.Member):
@@ -31,14 +34,16 @@ class EventHandler(commands.Cog):
             title=f"Hallo {user.name}!",
             colour=discord.Colour(Utils.Farbe.Welcome_Blue),
             description=f"Hallo {user.mention} willkommen auf dem Discord Server:\n**{user.guild.name}** !\nUm Spieler zu suchen, gebe `!ct` in einem Kanal ein, "
-                        f"der Commands Akzeptiert. Um ein Ticket vorzeitig zu löschen, gebe `!dt` ein. Der Rest ist selbsterklärend.\nJe nach dem, was du suchst, "
-                        f"schaue in der Kategorie: _Spielersuche_ nach der gewünschten Aktivität in den Reitern. Um bei einer Aktivität teilzunehmen, drücke auf die Reaktion (✅). "
+                        f"der Commands Akzeptiert. Um ein Ticket vorzeitig zu löschen, klicke auf die Reaktion (🛑) unter dem Ticket. Der Rest ist selbsterklärend.\nJe nach dem, was du suchst, "
+                        f"schaue in der Kategorie: _Spielersuche_ nach der gewünschten Aktivität in den Reitern. Um bei einer Aktivität teilzunehmen, drücke auf die "
+                        f"Reaktion (✅), um wieder aus der Aktivität auszusteigen (❌)."
                         f"Der Rest ist wieder selbsterklärend.\n**Viel Spaß!**"
         )
         embed.set_thumbnail(url=self.client.user.avatar_url)
         embed.set_image(url=user.avatar_url)
 
-        channel = discord.utils.get(user.guild.text_channels, name=str(Utils.YamlContainerManagement.get_yamlCGL("Variablen", "SpecifiedChannels", "Welcome").lower()))
+        channel = discord.utils.get(user.guild.text_channels, name=str(
+            Utils.YamlContainerManagement.get_yamlCGL("Variablen", "SpecifiedChannels", "Welcome").lower()))
 
         m = await channel.send(embed=embed)
         await asyncio.sleep(300)
@@ -59,6 +64,7 @@ class EventHandler(commands.Cog):
         embed.set_image(url=self.client.user.avatar_url)
 
         await guild.text_channels[0].send(embed=embed)
+
 
 # Cog Finishing
 

@@ -4,20 +4,23 @@ Variablen:
     Prefix: "!"
     Token: "ODI4MjI5MTYxNjEyMjE0Mjky.YGmigw.Vg2fUHtnq9o0rqJiL5imzWtzLqw"
     MongoDB: "mongodb+srv://Drageast:Schmidt04@cluster0.r1bgi.mongodb.net/Die_Botin?retryWrites=true&w=majority"
-    Webhook: "https://discordapp.com/api/webhooks/828241260425773086/O5HK2TedgGkxQmrVnP50cfaQ6YQIZidunuU9RWqggexXlV_aRe-Kj7ftShfN_P4RgMNB"
+    Webhook: "https://discordapp.com/api/webhooks/829406759524368444/SZhAiFwZvPqHk4hDBaJlkAhClHYy2Yf_v1xSTjfC7ApuZMNiE-3eORQMUsQigTsZmclI"
     Status: 2
 
   Dev_IDs:
     Drageast: 431017472083099660
 
   UniversalEmoji:
-    Vorhut: <:Vorhut:828541360063381536>
-    Schmelztiegel: <:Schmelztiegel:828541272246714400>
-    Gambit: <:Gambit:828541228470894603>
-    Raid: <:Raids:828541314450718741>
+    Vorhut: <:Vorhut:829406277716279346>
+    Schmelztiegel: <:Schmelztiegel:829406183701086238>
+    Gambit: <:Gambit:829406147252977675>
+    Raid: <:Raids:829406226722324520>
+
+  SpecifiedRoles:
+    Standart: "Mitglied"
 
   SpecifiedChannels:
-    Welcome: "allgemein"
+    Welcome: "willkommen"
 
 Bilder:
 

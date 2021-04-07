@@ -46,6 +46,10 @@ class EventHandler(commands.Cog):
             Utils.YamlContainerManagement.get_yamlCGL("Variablen", "SpecifiedChannels", "Welcome").lower()))
 
         m = await channel.send(embed=embed)
+
+        role = discord.utils.get(user.guild.roles, name=str(Utils.YamlContainerManagement.get_yamlCGL("Variablen", "SpecifiedRoles", "Standart")))
+        await user.add_roles(role)
+
         await asyncio.sleep(300)
         try:
             await m.delete()

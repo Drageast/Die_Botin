@@ -49,7 +49,7 @@ class TicketSystem(commands.Cog):
         try:
             reaction, user = await self.client.wait_for("reaction_add", timeout=120, check=check1)
 
-            choice = "Vorhut" if str(reaction.emoji) == Vorhut else ("Schmelztiegel" if str(reaction.emoji) == Schmelztiegel else ("Gambit" if str(reaction.emoji) == Gambit else ("Raid" if str(reaction.emoji) == Raid else None)))
+            choice = "Vorhut" if str(reaction.emoji) == Vorhut else ("Schmelztiegel" if str(reaction.emoji) == Schmelztiegel else ("Gambit" if str(reaction.emoji) == Gambit else ("Raid" if str(reaction.emoji) == Raid else "Sonstiges")))
 
         except asyncio.TimeoutError:
             try:
@@ -129,7 +129,7 @@ class TicketSystem(commands.Cog):
             colour=discord.Colour(colour),
             description=f"{response1}"
         )
-        if choice is not None:
+        if choice != "Sonstiges":
             embed.set_thumbnail(url=Utils.YamlContainerManagement.get_yamlCGL("Bilder", choice))
         embed.add_field(name="Benötigte Spieler:", value=f"{Anzahl}")
         embed.set_footer(text=f"Gesucht von: {ctx.author.name}", icon_url=ctx.author.avatar_url)

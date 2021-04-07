@@ -33,22 +33,23 @@ class TicketSystem(commands.Cog):
         embed = discord.Embed(
             title="Ticket",
             colour=discord.Colour(Utils.Farbe.Light_Blue),
-            description=f"Bitte klicke unten auf das Symbol, passend zu der Aktivität.\n({Raid}) **Raid**, ({Vorhut}) **Vorhut**, ({Gambit}) **Gambit**, ({Schmelztiegel}) **Schmelztiegel**"
+            description=f"Bitte klicke unten auf das Symbol, passend zu der Aktivität.\n({Raid}) **Raid**, ({Vorhut}) **Vorhut**, ({Gambit}) **Gambit**, ({Schmelztiegel}) **Schmelztiegel**, (♾) **Sonstiges**"
         )
 
         def check1(reaction, user):
-            return user == ctx.author and str(reaction.emoji) in [Vorhut, Schmelztiegel, Gambit, Raid]
+            return user == ctx.author and str(reaction.emoji) in [Vorhut, Schmelztiegel, Gambit, Raid, "♾"]
 
         m1 = await ctx.send(embed=embed)
         await m1.add_reaction(Raid)
         await m1.add_reaction(Vorhut)
         await m1.add_reaction(Gambit)
         await m1.add_reaction(Schmelztiegel)
+        await m1.add_reaction("♾")
 
         try:
             reaction, user = await self.client.wait_for("reaction_add", timeout=120, check=check1)
 
-            choice = "Vorhut" if str(reaction.emoji) == Vorhut else ("Schmelztiegel" if str(reaction.emoji) == Schmelztiegel else ("Gambit" if str(reaction.emoji) == Gambit else "Raid"))
+            choice = "Vorhut" if str(reaction.emoji) == Vorhut else ("Schmelztiegel" if str(reaction.emoji) == Schmelztiegel else ("Gambit" if str(reaction.emoji) == Gambit else ("Raid" if str(reaction.emoji) == Raid else None)))
 
         except asyncio.TimeoutError:
             try:
@@ -90,8 +91,7 @@ class TicketSystem(commands.Cog):
         embed = discord.Embed(
             title="Ticket",
             colour=discord.Colour(Utils.Farbe.Light_Blue),
-            description=f"Benenne nun in einer neuen Nachricht, **was deine Beschreibung dazu ist.** _Du kannst zusätzlich eine Uhrzeit anhängen, wann das event stattfinden,_"
-                        f"soll. Dazu Füge nach der Beschreibung ein `= Uhrzeit` ein._\nBeispiel: *Tiefsteinkrypta Fresh mit Erfahrung = 13:00*"
+            description=f"Benenne nun in einer neuen Nachricht, **was deine Beschreibung dazu ist.** Mit `Beschreibung = Uhrzeit` kannst du eine Uhrzeit anfügen.\nBeispiel: *Tiefsteinkrypta Fresh mit Erfahrung = 13:00*"
         )
         await m1.edit(embed=embed)
         await m1.clear_reactions()
@@ -129,7 +129,8 @@ class TicketSystem(commands.Cog):
             colour=discord.Colour(colour),
             description=f"{response1}"
         )
-        embed.set_thumbnail(url=Utils.YamlContainerManagement.get_yamlCGL("Bilder", choice))
+        if choice is not None:
+            embed.set_thumbnail(url=Utils.YamlContainerManagement.get_yamlCGL("Bilder", choice))
         embed.add_field(name="Benötigte Spieler:", value=f"{Anzahl}")
         embed.set_footer(text=f"Gesucht von: {ctx.author.name}", icon_url=ctx.author.avatar_url)
         if inhaltUhrzeit is not None:

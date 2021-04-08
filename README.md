@@ -5,7 +5,6 @@ Dieser Bot ist für die Community: _Destiny 2 Deutschland Community ( PlayStatio
 ###### Er wurde von [DrageastLP](https://github.com/Drageast) geschrieben und von folgenden Personen getestet:
 1. _Qualitätskontrolle:_ TezzQu
 2. _Funktionsverwaltung:_ killerbee_5000(Uli)
-3. _Auftraggeber:_ papabaer29
 
 ##### Genutzte pip – Pakete sind:
 

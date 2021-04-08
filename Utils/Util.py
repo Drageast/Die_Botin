@@ -135,6 +135,9 @@ class TicketReactor:
         while x < int(data.RequiredParticipants):
             reaction, user = await self.client.wait_for("reaction_add", check=check)
 
+            if reaction.user == self.client:
+                return
+
             if str(reaction.emoji) == "✅":
 
                 _data = DBPreconditioning.GET_Uccount(self, user)
@@ -147,7 +150,7 @@ class TicketReactor:
                         description=f"Der Spieler `{sender.name}` benötigt noch deinen Gamertag. Bitte Antworte mit deinem Gamertag."
                     )
 
-                    await user.send(embed=embed2)
+                    t = await user.send(embed=embed2)
                     try:
                         r = await TicketReactor.wait_message(self, user)
                     except asyncio.TimeoutError:
@@ -163,6 +166,7 @@ class TicketReactor:
                         description=f"Der Discord Nutzer: `{user.name}` hat sich mit dem **InGame Namen**: `{r.content}` angemeldet.{a}"
                     )
                     await sender.send(embed=embed)
+                    await t.edit(embed=embed)
 
                     DiscordUser.append(user)
                     GamerTag.append(r.content)

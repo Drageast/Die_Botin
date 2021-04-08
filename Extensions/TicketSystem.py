@@ -122,6 +122,7 @@ class TicketSystem(commands.Cog):
         await asyncio.sleep(1)
 
         await m1.delete()
+        await asyncio.sleep(2)
         try:
             Utils.DBPreconditioning.POST_Ticket(self, ctx.author, RequiredParticipants=Anzahl, ChannelID=message.channel.id, MessageID=message.id)
         except Exception as e:

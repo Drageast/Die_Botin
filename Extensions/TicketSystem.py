@@ -21,8 +21,8 @@ class TicketSystem(commands.Cog):
         return new_message
 
     @commands.guild_only()
-    @commands.command(aliases=["ct"])
-    async def CreateTicket(self, ctx):
+    @commands.command(aliases=["ticket"])
+    async def CreateTicket(self, ctx, *, Beschreibung):
 
         await ctx.message.delete()
         Vorhut = Utils.YamlContainerManagement.get_yamlCGL("Variablen", "UniversalEmoji", "Vorhut")
@@ -88,28 +88,7 @@ class TicketSystem(commands.Cog):
                 pass
             return
 
-        embed = discord.Embed(
-            title="Ticket",
-            colour=discord.Colour(Utils.Farbe.Light_Blue),
-            description=f"Benenne nun in einer neuen Nachricht, **was deine Beschreibung dazu ist.** Mit `Beschreibung = Uhrzeit` kannst du eine Uhrzeit anfügen.\nBeispiel: *Tiefsteinkrypta Fresh mit Erfahrung = 13:00*"
-        )
-        await m1.edit(embed=embed)
-        await m1.clear_reactions()
-
-        try:
-
-            r3 = await self.wait_message(ctx)
-            await r3.delete()
-        except asyncio.TimeoutError:
-            try:
-                await m1.delete()
-            except:
-                pass
-            return
-
-        # Textverarbeitung
-
-        inhalt = r3.content
+        inhalt = Beschreibung
 
         if "=" in inhalt:
             inhalt1, inhalt2 = inhalt.split("=")
@@ -121,7 +100,7 @@ class TicketSystem(commands.Cog):
         else:
             inhaltUhrzeit = None
 
-        response1 = inhalt1 if inhaltUhrzeit is not None else r3.content
+        response1 = inhalt1 if inhaltUhrzeit is not None else Beschreibung
         colour = Utils.Farbe.TezzQu if ctx.author.id == "336549722464452620" else Utils.Farbe.Light_Blue
 
         embed = discord.Embed(

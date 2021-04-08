@@ -33,7 +33,7 @@ class EventHandler(commands.Cog):
         embed = discord.Embed(
             title=f"Hallo {user.name}!",
             colour=discord.Colour(Utils.Farbe.Welcome_Blue),
-            description=f"Hallo {user.mention} willkommen auf dem Discord Server:\n**{user.guild.name}** !\nUm Spieler zu suchen, gebe `!ct` in einem Kanal ein, "
+            description=f"Hallo {user.mention} willkommen auf dem Discord Server:\n**{user.guild.name}** !\nUm Spieler zu suchen, gebe `!ticket` in einem Kanal ein, "
                         f"der Commands Akzeptiert. Um ein Ticket vorzeitig zu löschen, klicke auf die Reaktion (🛑) unter dem Ticket. Der Rest ist selbsterklärend.\nJe nach dem, was du suchst, "
                         f"schaue in der Kategorie: _Spielersuche_ nach der gewünschten Aktivität in den Reitern. Um bei einer Aktivität teilzunehmen, drücke auf die "
                         f"Reaktion (✅), um wieder aus der Aktivität auszusteigen (❌)."

@@ -1,4 +1,5 @@
 pip
+tweepy
 discord.py
 discord.py[voice]
 discord

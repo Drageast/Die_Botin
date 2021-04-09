@@ -4,8 +4,7 @@ import discord
 import yaml
 import pymongo
 import aiohttp
-import requests
-
+import tweepy
 # Utils
 import Utils
 
@@ -91,7 +90,7 @@ class DEBUG(commands.Cog):
         embed.add_field(name="PyYaml", value=f"{yaml.__version__}")
         embed.add_field(name="PyMongo", value=f"{pymongo.__version__}")
         embed.add_field(name="Aiohttp", value=f"{aiohttp.__version__}")
-        embed.add_field(name="Requests", value=f"{requests.__version__}")
+        embed.add_field(name="Tweepy", value=f"{tweepy.__version__}")
 
         await Utils.TimeSend.se_ctx(ctx, embed, 8)
 

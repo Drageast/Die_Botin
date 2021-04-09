@@ -5,7 +5,15 @@ Variablen:
     Token: "ODI4MjI5MTYxNjEyMjE0Mjky.YGmigw.Vg2fUHtnq9o0rqJiL5imzWtzLqw"
     MongoDB: "mongodb+srv://Drageast:Schmidt04@cluster0.r1bgi.mongodb.net/Die_Botin?retryWrites=true&w=majority"
     Webhook: "https://discordapp.com/api/webhooks/829406759524368444/SZhAiFwZvPqHk4hDBaJlkAhClHYy2Yf_v1xSTjfC7ApuZMNiE-3eORQMUsQigTsZmclI"
+    Webhook2: "https://discordapp.com/api/webhooks/830088806547062866/WUKSypLuvD5yLtMSF8MHSz8hU_LFloeKGDVTw92riUe2Y1TSJHn0VligUIrLhhqx1K7b"
     Status: 1
+
+  TwitterSide:
+    API_Key: "9byz0yCT8AEC8kBeFO48ZaAXI"
+    API_SECRET_Key: "IFK3h8ExSKqPX7HyujmWKcW3ZoLUGmz7BnJF3i6yLPz1QbpuZR"
+    BEARER_Token: "AAAAAAAAAAAAAAAAAAAAAIbEOQEAAAAAVxSlp%2BlagBYVKRLCLqKQv1%2B3j7c%3DE26bRzlNDTQdJczdTwC0k1L1EZctoa2EMMYesmzILMWj9AH6KX"
+    ACCESS_Token: "1045325279399473153-XqIE2a3nJ3Kn9qWQLyx69i1Ft1wGFh"
+    ACCESS_SECRET_Token: "fe5atbryNWn74GbOqmVylmhQ3yWUwZGY9XPbJIStuDTPa"
 
   Dev_IDs:
     Drageast: 431017472083099660

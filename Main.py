@@ -51,7 +51,7 @@ async def on_ready():
     print(f'DATENBANK AKTIV\n<-->\nONLINE\n<-->\n{client.user}\n<-->\nTwitter API AKTIV\n<-->')
 
 
-@tasks.loop(hours=1)
+@tasks.loop(minutes=15)
 async def get_twitter():
     tweetL = api.user_timeline(id=2431136251, tweet_mode="extended")
     Newest_Tweet_Text = tweetL[0].full_text

@@ -85,6 +85,7 @@ async def get_twitter():
                                avatar_url=client.user.avatar_url, embed=embed)
 
 
+
 # Laden der Erweiterungen
 
 

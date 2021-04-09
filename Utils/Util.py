@@ -135,7 +135,7 @@ class TicketReactor:
         while x < int(data.RequiredParticipants):
             reaction, user = await self.client.wait_for("reaction_add", check=check)
 
-            if reaction.user == self.client:
+            if user.bot:
                 return
 
             if str(reaction.emoji) == "✅":

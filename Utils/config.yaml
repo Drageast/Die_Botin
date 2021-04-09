@@ -5,7 +5,7 @@ Variablen:
     Token: "ODI4MjI5MTYxNjEyMjE0Mjky.YGmigw.Vg2fUHtnq9o0rqJiL5imzWtzLqw"
     MongoDB: "mongodb+srv://Drageast:Schmidt04@cluster0.r1bgi.mongodb.net/Die_Botin?retryWrites=true&w=majority"
     Webhook: "https://discordapp.com/api/webhooks/829406759524368444/SZhAiFwZvPqHk4hDBaJlkAhClHYy2Yf_v1xSTjfC7ApuZMNiE-3eORQMUsQigTsZmclI"
-    Status: 1
+    Status: 2
 
   Dev_IDs:
     Drageast: 431017472083099660

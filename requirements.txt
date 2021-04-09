@@ -1,5 +1,4 @@
 pip
-requests
 discord.py
 discord.py[voice]
 discord

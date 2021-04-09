@@ -18,7 +18,7 @@ class Sterilization_Uccount:
         self.TicketEntry = TicketEntry
 
 
-class DBPreconditioning:
+class DBPreconditioning(Exception):
     def __init__(self, client):
         self.client = client
 
@@ -94,17 +94,14 @@ class DBPreconditioning:
         if _data is None:
             raise DatabasePreconditioning(f"Das Ticket mit der _id: {user.id} existiert nicht")
 
-        elif _data.ChannelID is None or _data.MessageID is None:
+        elif _data.ChannelID is None:
             self.client.ticket.delete_one({"_id": user.id})
 
         else:
             self.client.ticket.delete_one({"_id": user.id})
-            try:
-                channel = self.client.get_channel(_data.ChannelID)
-                m = await channel.fetch_message(_data.MessageID)
-                await m.delete()
-            except:
-                pass
+            channel = self.client.get_channel(_data.ChannelID)
+            m = await channel.fetch_message(_data.MessageID)
+            await m.delete()
 
 
     @staticmethod

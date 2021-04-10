@@ -55,6 +55,8 @@ async def on_ready():
 async def get_twitter():
     tweetL = api.user_timeline(id=2431136251, tweet_mode="extended")
     Newest_Tweet_Text = tweetL[0].full_text
+    Newest_Tweet_id_String = tweetL[0].id_str
+    base_URL = f'https://www.twitter.com/BungieHelp/status/{Newest_Tweet_id_String}'
     Newest_Tweet_Time = tweetL[0].created_at
 
     data = client.Config.find_one({"_id": "TwitterAPI"})
@@ -71,18 +73,10 @@ async def get_twitter():
             url = Utils.YamlContainerManagement.get_yamlCGL("Variablen", "ClientSide", "Webhook2")
             webhook = Webhook.from_url(url, adapter=AsyncWebhookAdapter(session))
 
-            embed = discord.Embed(
-                title="",
-                colour=discord.Colour(0x1495e6),
-                description=f"[Twitter Link](https://twitter.com/BungieHelp)\n{Newest_Tweet_Text}"
-            )
-            embed.set_thumbnail(
-                url="https://image.api.playstation.com/vulcan/img/rnd/202011/1022/r8FavqFIoXMLSAOasPmKuQQF.jpg")
-            embed.set_author(name="@BungieHelp",
-                             icon_url="https://pbs.twimg.com/profile_images/1362463058132492289/vNe1WM28_400x400.jpg")
+            message = f"{base_URL}"
 
-            await webhook.send(username="@BungieHelp",
-                               avatar_url=client.user.avatar_url, embed=embed)
+            await webhook.send(content=message, username="@BungieHelp",
+                               avatar_url=client.user.avatar_url)
 
 
 

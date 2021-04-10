@@ -95,8 +95,6 @@ class DEBUG(commands.Cog):
         await Utils.TimeSend.se_ctx(ctx, embed, 8)
 
 
-
-
 # Cog Finishing
 
 

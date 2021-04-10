@@ -1,12 +1,13 @@
 # Import
 import asyncio
+import functools
+import inspect
+import time
 import discord
 import yaml
-from .Database_Preconditioning import DBPreconditioning
 
 
 class YamlContainerManagement:
-
 
     @staticmethod
     def get_yamlC(container: str):
@@ -70,7 +71,6 @@ class TimeSend:
             await m.delete()
         except:
             pass
-
 
     @staticmethod
     async def sm_ctx(ctx, message, seconds=None):
@@ -228,12 +228,33 @@ class Pagination:
                 break
 
 
+class WrapperDecorator:
+
+    @staticmethod
+    def TimeLogger(func):
+
+        def wrapper_NONE_async(*args, **kwargs):
+            before = time.time()
+            func(*args, **kwargs)
+            print(f"Executed Function: |{func.__name__}|-|NONE_ASYNC| ; Execution took: |{time.time() - before} seconds|")
+
+        @functools.wraps(func)
+        async def wrapper_IS_async(*args, **kwargs):
+            before = time.time()
+            await func(*args, **kwargs)
+            print(f"Executed Function: |{func.__name__}|-|IS_ASYNC| ; Execution took: |{time.time() - before} seconds|")
+
+        if inspect.iscoroutinefunction(func):
+            return wrapper_IS_async
+        else:
+            return wrapper_NONE_async
+
+
 # VARIABLEN
 
 # FARBEN
 
 class Farbe:
-
     Dark_Blue = 0xf3e63
 
     Light_Blue = 0x84a4cd

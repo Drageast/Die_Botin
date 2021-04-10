@@ -1,6 +1,7 @@
 # Import
 from .ErrorHandler import DatabasePreconditioning
 import discord
+from .Util import WrapperDecorator
 
 
 class Sterilization_Ticket:
@@ -24,6 +25,7 @@ class DBPreconditioning(Exception):
 
 
     @staticmethod
+    @WrapperDecorator.TimeLogger
     def sterilize(data, _type):
 
         if _type is Sterilization_Ticket:
@@ -47,6 +49,7 @@ class DBPreconditioning(Exception):
 
 
     @staticmethod
+    @WrapperDecorator.TimeLogger
     def POST_Ticket(self, user: discord.Member, RequiredParticipants: int, ChannelID: int, MessageID: int):
         _data = self.client.ticket.find_one({"_id": user.id})
 
@@ -76,6 +79,7 @@ class DBPreconditioning(Exception):
 
 
     @staticmethod
+    @WrapperDecorator.TimeLogger
     def GET_Ticket(self, user: discord.Member):
         _data = self.client.ticket.find_one({"_id": user.id})
 
@@ -88,6 +92,7 @@ class DBPreconditioning(Exception):
 
 
     @staticmethod
+    @WrapperDecorator.TimeLogger
     async def DEL_Ticket(self, user: discord.Member):
         _data = DBPreconditioning.GET_Ticket(self, user)
 
@@ -105,6 +110,7 @@ class DBPreconditioning(Exception):
 
 
     @staticmethod
+    @WrapperDecorator.TimeLogger
     def POST_Uccount(self, user: discord.Member, Reports: int = None, TicketEntry: bool = False):
         _data = self.client.Uccount.find_one({"_id": user.id})
 
@@ -134,6 +140,7 @@ class DBPreconditioning(Exception):
 
 
     @staticmethod
+    @WrapperDecorator.TimeLogger
     def GET_Uccount(self, user: discord.Member):
         _data = self.client.Uccount.find_one({"_id": user.id})
 
@@ -147,6 +154,7 @@ class DBPreconditioning(Exception):
 
 
     @staticmethod
+    @WrapperDecorator.TimeLogger
     def DEL_Uccount(self, user: discord.Member):
         _data = DBPreconditioning.GET_Uccount(self, user)
 

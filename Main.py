@@ -43,7 +43,6 @@ async def on_ready():
 
     await client.change_presence(status=choiceStatus, activity=choiceActivity)
     client.mongo = MongoClient(str(client.connection_url))
-    client.ticket = client.mongo["Die_Botin"]["Tickets"]
     client.Uccount = client.mongo["Die_Botin"]["Uccount"]
     client.Config = client.mongo["Die_Botin"]["Config"]
 

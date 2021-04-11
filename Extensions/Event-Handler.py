@@ -18,10 +18,6 @@ class EventHandler(commands.Cog):
     @commands.Cog.listener()
     async def on_member_remove(self, user: discord.Member):
         try:
-            await Utils.DBPreconditioning.DEL_Ticket(self, user)
-        except:
-            pass
-        try:
             await Utils.DBPreconditioning.DEL_Uccount(self, user)
         except:
             pass
@@ -33,11 +29,8 @@ class EventHandler(commands.Cog):
         embed = discord.Embed(
             title=f"Hallo {user.name}!",
             colour=discord.Colour(Utils.Farbe.Welcome_Blue),
-            description=f"Hallo {user.mention} willkommen auf dem Discord Server:\n**{user.guild.name}** !\nUm Spieler zu suchen, gebe `!ticket` in einem Kanal ein, "
-                        f"der Commands Akzeptiert. Um ein Ticket vorzeitig zu löschen, klicke auf die Reaktion (🛑) unter dem Ticket. Der Rest ist selbsterklärend.\nJe nach dem, was du suchst, "
-                        f"schaue in der Kategorie: _Spielersuche_ nach der gewünschten Aktivität in den Reitern. Um bei einer Aktivität teilzunehmen, drücke auf die "
-                        f"Reaktion (✅), um wieder aus der Aktivität auszusteigen (❌)."
-                        f"Der Rest ist wieder selbsterklärend.\n**Viel Spaß!**"
+            description=f"Hallo {user.mention} willkommen auf dem Discord Server:\n**{user.guild.name}** !\nUm Spieler zu suchen, gehe in den Korrespondierenden Kanal,\n"
+                        f"die Angepinnte Nachricht oben im Chat erklärt, wie es funktioniert.\n**Viel Spaß!**"
         )
         embed.set_thumbnail(url=self.client.user.avatar_url)
         embed.set_image(url=user.avatar_url)

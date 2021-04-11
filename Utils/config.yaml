@@ -29,6 +29,7 @@ Variablen:
 
   SpecifiedChannels:
     Welcome: "willkommen"
+    SpielerSuche: ["vorhut", "raid", "gambit", "schmelztiegel", "sonstiges"]
 
 Bilder:
 

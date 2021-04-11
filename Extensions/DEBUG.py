@@ -22,9 +22,8 @@ class DEBUG(commands.Cog):
         embed = discord.Embed(
             title="-<DEBUG>-",
             colour=discord.Colour(Utils.Farbe.Dark_Blue),
-            description="Dies ist der DEBUG - Modus. Es gibt 4 verschiedene Modes:"
+            description="Dies ist der DEBUG - Modus. Es gibt 3 verschiedene Modes:"
                         "\n`!debug bool` - Setzt das Bool-Argument deines Uccounts zurück"
-                        "\n`!debug ticket` - Löscht ein vorhandenes Ticket, wenn die Reaktion dafür nicht funktioniert"
                         "\n**Administration:** `!debug latency` - Zeigt die Latenz."
                         "\n**Administration:** `!debug version` - Versions kontrolle."
         )
@@ -36,29 +35,12 @@ class DEBUG(commands.Cog):
     @debug.command()
     async def bool(self, ctx):
 
-        Utils.DBPreconditioning.POST_Uccount(self, ctx.author)
+        await Utils.DBPreconditioning.POST_Uccount(self, ctx.author)
 
         embed = discord.Embed(
             title="-<DEBUG>-",
             colour=discord.Colour(Utils.Farbe.Dark_Blue),
             description="**DEBUG - Modus:** ```py\nbool - Argument auf False gestellt```"
-        )
-        embed.set_thumbnail(url=self.client.user.avatar_url)
-
-        await Utils.TimeSend.se_ctx(ctx, embed, 8)
-
-
-    @debug.command()
-    async def ticket(self, ctx):
-        try:
-            await Utils.DBPreconditioning.DEL_Ticket(self, ctx.author)
-        except:
-            pass
-
-        embed = discord.Embed(
-            title="-<DEBUG>-",
-            colour=discord.Colour(Utils.Farbe.Dark_Blue),
-            description='**DEBUG - Modus:** ```py\ntype.Ticket({"_id": "'f'{ctx.author.id}''"}) - gelöscht```'
         )
         embed.set_thumbnail(url=self.client.user.avatar_url)
 

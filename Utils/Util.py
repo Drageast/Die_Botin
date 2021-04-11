@@ -235,14 +235,16 @@ class WrapperDecorator:
 
         def wrapper_NONE_async(*args, **kwargs):
             before = time.time()
-            func(*args, **kwargs)
+            func_ = func(*args, **kwargs)
             print(f"Executed Function: |{func.__name__}|-|NONE_ASYNC| ; Execution took: |{time.time() - before} seconds|")
+            return func_
 
         @functools.wraps(func)
         async def wrapper_IS_async(*args, **kwargs):
             before = time.time()
-            await func(*args, **kwargs)
+            func_ = await func(*args, **kwargs)
             print(f"Executed Function: |{func.__name__}|-|IS_ASYNC| ; Execution took: |{time.time() - before} seconds|")
+            return func_
 
         if inspect.iscoroutinefunction(func):
             return wrapper_IS_async

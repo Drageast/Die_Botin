@@ -34,11 +34,13 @@ api = tweepy.API(auth)
 @client.listen()
 async def on_ready():
     client.connection_url = Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "ClientSide", "MongoDB")
-    status = int(Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "ClientSide", "Status"))
+    status = int(Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "ClientSide", "Status", "ID"))
+    Text = Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "ClientSide", "Status", "Text")
+    game = "Destiny 2" if Text is None else Text
 
     choiceStatus = discord.Status.online if status == 1 else discord.Status.do_not_disturb
     choiceActivity = discord.Activity(type=discord.ActivityType.playing,
-                                      name="Destiny 2") if status == 1 else discord.Activity(
+                                      name=game) if status == 1 else discord.Activity(
         type=discord.ActivityType.watching, name="WARTUNGSARBEITEN")
 
     await client.change_presence(status=choiceStatus, activity=choiceActivity)

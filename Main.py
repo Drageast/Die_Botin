@@ -75,7 +75,7 @@ async def get_twitter():
         client.Config.update_one({"_id": "TwitterAPI"}, {"$set": {"Time": Newest_Tweet_Time}})
 
         async with aiohttp.ClientSession() as session:
-            url = Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "ClientWebhooks", "TwitterHook")
+            url = Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "ClientSide", "ClientWebhooks", "TwitterHook")
             webhook = Webhook.from_url(url, adapter=AsyncWebhookAdapter(session))
 
             message = f"{base_URL}"

@@ -4,9 +4,11 @@ Variablen:
     Prefix: "!"
     Token: "ODI4MjI5MTYxNjEyMjE0Mjky.YGmigw.Vg2fUHtnq9o0rqJiL5imzWtzLqw"
     MongoDB: "mongodb+srv://Drageast:Schmidt04@cluster0.r1bgi.mongodb.net/Die_Botin?retryWrites=true&w=majority"
-    Webhook: "https://discordapp.com/api/webhooks/829406759524368444/SZhAiFwZvPqHk4hDBaJlkAhClHYy2Yf_v1xSTjfC7ApuZMNiE-3eORQMUsQigTsZmclI"
-    Webhook2: "https://discordapp.com/api/webhooks/830088806547062866/WUKSypLuvD5yLtMSF8MHSz8hU_LFloeKGDVTw92riUe2Y1TSJHn0VligUIrLhhqx1K7b"
     Status: 1
+
+    ClientWebhooks:
+      ErrorHook: "https://discordapp.com/api/webhooks/829406759524368444/SZhAiFwZvPqHk4hDBaJlkAhClHYy2Yf_v1xSTjfC7ApuZMNiE-3eORQMUsQigTsZmclI"
+      TwitterHook: "https://discordapp.com/api/webhooks/830088806547062866/WUKSypLuvD5yLtMSF8MHSz8hU_LFloeKGDVTw92riUe2Y1TSJHn0VligUIrLhhqx1K7b"
 
   TwitterSide:
     API_Key: "9byz0yCT8AEC8kBeFO48ZaAXI"
@@ -22,21 +24,27 @@ Variablen:
     Vorhut: <:Vorhut:829406277716279346>
     Schmelztiegel: <:Schmelztiegel:829406183701086238>
     Gambit: <:Gambit:829406147252977675>
-    Raid: <:Raids:829406226722324520>
+    Raid: <:Raids:831909518044299316>
 
   SpecifiedRoles:
     Standart: "Mitglied"
+    ServerTeam:
+      Owner: "Owner"
+      Developer: "Developer"
+      Administrator: "Administrator"
 
   SpecifiedChannels:
     Welcome: "willkommen"
     SpielerSuche: ["vorhut", "raid", "gambit", "schmelztiegel", "sonstiges"]
+    SupportChannelVOICE: 830060705662369885
+    AdminChat: 829416139879612476
 
 Bilder:
 
   Vorhut: "https://i.imgur.com/nz0kSOV.jpg"
   Schmelztiegel: "https://i.imgur.com/mU2kjaN.jpg"
   Gambit: "https://i.imgur.com/DhDebKD.jpg"
-  Raid: "https://i.imgur.com/rDVZY5m.jpg"
+  Raid: "https://i.imgur.com/bPoZob0.jpg"
 
 Embed:
 

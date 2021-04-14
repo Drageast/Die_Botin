@@ -37,13 +37,13 @@ class Moderation(commands.Cog):
 
         try:
             int(Anzahl)
-            for message in await ctx.channel.purge(limit=int(Anzahl)):
+            for _ in await ctx.channel.purge(limit=int(Anzahl)):
                 x += 1
 
             embed = discord.Embed(
                 title='Und so geht die Freiheit zu grunde - mit donnerndem Applaus',
                 colour=discord.Colour(Utils.Farbe.Dark_Blue),
-                description=f'**{x}** Nachrichten gelöscht.\nWenn du alle Nachrichten löschen möchtest, gebe: `{self.client.command_prefix}c *` ein.'
+                description=f'**{x}/{Anzahl}** Nachrichten gelöscht.\nWenn du alle Nachrichten löschen möchtest, gebe: `{self.client.command_prefix}c *` ein.'
             )
             embed.set_thumbnail(url=self.client.user.avatar_url)
 
@@ -57,7 +57,7 @@ class Moderation(commands.Cog):
         except:
 
             if Anzahl == '*':
-                for message in await ctx.channel.purge(limit=None):
+                for _ in await ctx.channel.purge(limit=None):
                     x += 1
 
                 embed = discord.Embed(

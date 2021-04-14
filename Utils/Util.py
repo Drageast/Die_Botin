@@ -10,17 +10,30 @@ import yaml
 class YamlContainerManagement:
 
     @staticmethod
-    def get_yamlC(container: str):
+    def GET_yamlContainer(container: str):
         with open("Utils/config.yaml", "r") as f:
             container_ = yaml.safe_load(f)
         container_ = container_[container]
         return container_
 
     @staticmethod
-    def get_yamlCGL(container: str, group: str, load: str = None):
-        container_ = YamlContainerManagement.get_yamlC(container)
+    def GET_yamlAttr(container: str, Attr1: str = None, Attr2: str = None, Attr3: str = None, Attr4: str = None):
+        container_ = YamlContainerManagement.GET_yamlContainer(container)
 
-        return container_[group] if load is None else container_[group][load]
+        if Attr1 is not None and Attr2 is not None and Attr3 is not None and Attr4 is not None:
+            return container_[Attr1][Attr2][Attr3][Attr4]
+
+        elif Attr1 is not None and Attr2 is not None and Attr3 is not None:
+            return container_[Attr1][Attr2][Attr3]
+
+        elif Attr1 is not None and Attr2 is not None:
+            return container_[Attr1][Attr2]
+
+        elif Attr1 is not None:
+            return container_[Attr1]
+
+        else:
+            return container_
 
 
 # SMOOTH_SEND

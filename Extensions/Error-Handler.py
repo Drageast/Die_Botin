@@ -35,7 +35,7 @@ class ErrorHandling(commands.Cog):
                 isinstance(error, commands.NotOwner) or isinstance(error, commands.CommandOnCooldown) or isinstance(error, commands.CheckFailure):
 
             embed = discord.Embed(
-                title=f'{Utils.YamlContainerManagement.get_yamlCGL("Embed", "HTitle")}',
+                title=f'{Utils.YamlContainerManagement.GET_yamlAttr("Embed", "HTitle")}',
                 colour=discord.Colour(Utils.Farbe.Dark_Blue),
                 description=f'Fehler:\n`{error}`\n'
             )
@@ -56,7 +56,7 @@ class ErrorHandling(commands.Cog):
 
             if isinstance(error.original, Utils.DatabasePreconditioning):
                 embed = discord.Embed(
-                    title=f'{Utils.YamlContainerManagement.get_yamlCGL("Embed", "HTitle")}',
+                    title=f'{Utils.YamlContainerManagement.GET_yamlAttr("Embed", "HTitle")}',
                     colour=discord.Colour(Utils.Farbe.Dark_Blue),
                     description=f'Ein Fehler in der Datenbank ist aufgetreten:\n`{error}`\n'
                 )
@@ -76,7 +76,7 @@ class ErrorHandling(commands.Cog):
 
             else:
 
-                owner = await self.client.fetch_user(Utils.YamlContainerManagement.get_yamlCGL("Variablen", "Dev_IDs", "Drageast"))
+                owner = await self.client.fetch_user(Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "Dev_IDs", "Drageast"))
 
                 embed = discord.Embed(
                     title='ACHTUNG!',
@@ -88,7 +88,7 @@ class ErrorHandling(commands.Cog):
                 embed.set_thumbnail(url=self.client.user.avatar_url)
 
                 async with aiohttp.ClientSession() as session:
-                    url = Utils.YamlContainerManagement.get_yamlCGL("Variablen", "ClientSide", "Webhook")
+                    url = Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "ClientSide", "ClientWebhooks", "ErrorHook")
 
                     webhook = Webhook.from_url(url, adapter=AsyncWebhookAdapter(session))
 
@@ -149,7 +149,7 @@ class ErrorHandling(commands.Cog):
             if command is None:
 
                 embed = discord.Embed(
-                    title=f'{Utils.YamlContainerManagement.get_yamlCGL("Embed", "HTitle")}',
+                    title=f'{Utils.YamlContainerManagement.GET_yamlAttr("Embed", "HTitle")}',
                     colour=discord.Colour(Utils.Farbe.Dark_Blue),
                     description=f'Dieser Command existiert nicht.\nÜberprüfe ihn auf Rechtschreibfehler.\nDeine Angabe: **{command_name}**'
                 )
@@ -161,7 +161,7 @@ class ErrorHandling(commands.Cog):
             elif command == ctx.command:
 
                 embed = discord.Embed(
-                    title=f'{Utils.YamlContainerManagement.get_yamlCGL("Embed", "HTitle")}',
+                    title=f'{Utils.YamlContainerManagement.GET_yamlAttr("Embed", "HTitle")}',
                     colour=discord.Colour(Utils.Farbe.Dark_Blue),
                     description=f'Du darfst diesen Command nicht Deaktivieren!'
                 )

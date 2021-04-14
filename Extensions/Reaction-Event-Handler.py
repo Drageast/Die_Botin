@@ -35,7 +35,7 @@ class Reaction_EventHandler(commands.Cog):
         elif message.content.startswith("!"):
             return
 
-        elif message.channel.name not in Utils.YamlContainerManagement.get_yamlCGL("Variablen", "SpecifiedChannels", "SpielerSuche"):
+        elif message.channel.name not in Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "SpecifiedChannels", "SpielerSuche"):
             return
 
         elif message.author.bot:
@@ -58,7 +58,7 @@ class Reaction_EventHandler(commands.Cog):
         elif reaction.message.content.startswith("!"):
             return
 
-        elif reaction.message.channel.name not in Utils.YamlContainerManagement.get_yamlCGL("Variablen", "SpecifiedChannels", "SpielerSuche"):
+        elif reaction.message.channel.name not in Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "SpecifiedChannels", "SpielerSuche"):
             return
 
         elif user.bot:
@@ -114,7 +114,7 @@ class Reaction_EventHandler(commands.Cog):
         elif reaction.message.content.startswith("!"):
             return
 
-        elif reaction.message.channel.name not in Utils.YamlContainerManagement.get_yamlCGL("Variablen", "SpecifiedChannels", "SpielerSuche"):
+        elif reaction.message.channel.name not in Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "SpecifiedChannels", "SpielerSuche"):
             return
 
         elif user.bot:

@@ -24,6 +24,34 @@ class EventHandler(commands.Cog):
 
 
     @commands.Cog.listener()
+    async def on_voice_state_update(self, member, before, after):
+        if after.channel is None:
+            return
+
+        elif after.channel.id == Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "SpecifiedChannels", "SupportChannelVOICE") and not member.bot:
+
+            channel = await self.client.fetch_channel(Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "SpecifiedChannels", "AdminChat"))
+
+            role1 = discord.utils.get(member.guild.roles, name=str(Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "SpecifiedRoles", "ServerTeam", "Owner")))
+            role2 = discord.utils.get(member.guild.roles, name=str(Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "SpecifiedRoles", "ServerTeam", "Administrator")))
+            role3 = discord.utils.get(member.guild.roles, name=str(Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "SpecifiedRoles", "ServerTeam", "Developer")))
+
+            embed = discord.Embed(
+                title="Support Anfrage:",
+                colour=discord.Colour(Utils.Farbe.Orange),
+                description=f"**{role1.mention}/{role2.mention}/{role3.mention}**\nDer User: `{member.name}` wartet in dem Sprachkanal: `{after.channel.name}`."
+            )
+            embed.set_thumbnail(url=member.avatar_url)
+
+            m = await channel.send(embed=embed)
+            await asyncio.sleep(120)
+            await m.delete()
+
+        else:
+            pass
+
+
+    @commands.Cog.listener()
     async def on_member_join(self, user: discord.Member):
 
         embed = discord.Embed(
@@ -36,11 +64,11 @@ class EventHandler(commands.Cog):
         embed.set_image(url=user.avatar_url)
 
         channel = discord.utils.get(user.guild.text_channels, name=str(
-            Utils.YamlContainerManagement.get_yamlCGL("Variablen", "SpecifiedChannels", "Welcome").lower()))
+            Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "SpecifiedChannels", "Welcome").lower()))
 
         m = await channel.send(embed=embed)
 
-        role = discord.utils.get(user.guild.roles, name=str(Utils.YamlContainerManagement.get_yamlCGL("Variablen", "SpecifiedRoles", "Standart")))
+        role = discord.utils.get(user.guild.roles, name=str(Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "SpecifiedRoles", "Standart")))
         await user.add_roles(role)
 
         await asyncio.sleep(300)
@@ -48,6 +76,7 @@ class EventHandler(commands.Cog):
             await m.delete()
         except:
             pass
+
 
     @commands.Cog.listener()
     async def on_guild_join(self, guild: discord.Guild):

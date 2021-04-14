@@ -14,16 +14,16 @@ import Utils
 intents = discord.Intents.default()
 intents.members = True
 client = commands.AutoShardedBot(
-    command_prefix=Utils.YamlContainerManagement.get_yamlCGL("Variablen", "ClientSide", "Prefix"),
+    command_prefix=Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "ClientSide", "Prefix"),
     intents=intents,
     case_insensitive=True)
 
 # Tweepy
 
-auth = tweepy.OAuthHandler(Utils.YamlContainerManagement.get_yamlCGL("Variablen", "TwitterSide", "API_Key"),
-                           Utils.YamlContainerManagement.get_yamlCGL("Variablen", "TwitterSide", "API_SECRET_Key"))
-auth.set_access_token(Utils.YamlContainerManagement.get_yamlCGL("Variablen", "TwitterSide", "ACCESS_Token"),
-                      Utils.YamlContainerManagement.get_yamlCGL("Variablen", "TwitterSide", "ACCESS_SECRET_Token"))
+auth = tweepy.OAuthHandler(Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "TwitterSide", "API_Key"),
+                           Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "TwitterSide", "API_SECRET_Key"))
+auth.set_access_token(Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "TwitterSide", "ACCESS_Token"),
+                      Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "TwitterSide", "ACCESS_SECRET_Token"))
 
 api = tweepy.API(auth)
 
@@ -33,8 +33,8 @@ api = tweepy.API(auth)
 
 @client.listen()
 async def on_ready():
-    client.connection_url = Utils.YamlContainerManagement.get_yamlCGL("Variablen", "ClientSide", "MongoDB")
-    status = int(Utils.YamlContainerManagement.get_yamlCGL("Variablen", "ClientSide", "Status"))
+    client.connection_url = Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "ClientSide", "MongoDB")
+    status = int(Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "ClientSide", "Status"))
 
     choiceStatus = discord.Status.online if status == 1 else discord.Status.do_not_disturb
     choiceActivity = discord.Activity(type=discord.ActivityType.playing,
@@ -50,7 +50,7 @@ async def on_ready():
     print(f'DATENBANK AKTIV\n<-->\nONLINE\n<-->\n{client.user}\n<-->\nTwitter API AKTIV\n<-->')
 
 
-@tasks.loop(minutes=15)
+@tasks.loop(minutes=1)
 async def get_twitter():
     tweetL = api.user_timeline(id=2431136251, tweet_mode="extended")
     Newest_Tweet_Text = tweetL[0].full_text
@@ -69,7 +69,7 @@ async def get_twitter():
         client.Config.update_one({"_id": "TwitterAPI"}, {"$set": {"Time": Newest_Tweet_Time}})
 
         async with aiohttp.ClientSession() as session:
-            url = Utils.YamlContainerManagement.get_yamlCGL("Variablen", "ClientSide", "Webhook2")
+            url = Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "ClientWebhooks", "TwitterHook")
             webhook = Webhook.from_url(url, adapter=AsyncWebhookAdapter(session))
 
             message = f"{base_URL}"
@@ -94,7 +94,7 @@ print(f"<-->\nCogs geladen! Anzahl: {x}\n<-->")
 
 
 def token_output():
-    data = Utils.YamlContainerManagement.get_yamlCGL("Variablen", "ClientSide", "Token")
+    data = Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "ClientSide", "Token")
     return data
 
 

@@ -6,6 +6,20 @@ Dieser Bot ist für die Community: _Destiny 2 Deutschland Community ( PlayStatio
 1. _Qualitätskontrolle:_ TezzQu
 2. _Funktionsverwaltung:_ killerbee_5000(Uli)
 
+###### Sonstige Contributor:
+1. Loki
+2. AKAII96
+3. Zerberus 
+4. Virussumpf
+5. _Notfall Qualitätskontrolle:_ K03gang 
+6. _Networking:_ TheRealLaurinator
+7. LooCrank 
+8. _Notfall Qualitätskontrolle:_ Jonas R.
+9. Ines-agn
+10. _GitHub Manager:_ Eisenschild
+11. Bristerus
+12. Niclas Rapp
+
 ##### Genutzte pip – Pakete sind:
 
 - [Discord.py](https://pypi.org/project/discord.py/)
@@ -51,8 +65,8 @@ genutzt werden, solange die Funktion in der `__init__.py` - Datei gekennzeichnet
 ##### Ticket - System:
 
 Der Bot besitzt ein Ticket-System, welches es sehr einfach macht, Spieler für 
-eine Aktivität zu suchen. Der Befehl zum Starten lautet: `!ct`, der Rest ist selbsterklärend.
-Mit `!dt` können sie auch das Ticket löschen, selbst wenn es du noch nicht alle Spieler gefunden hast.
+eine Aktivität zu suchen. Man muss lediglich in der Kategorie `Spielersuche`
+eine Nachricht schreiben, den Rest managed der Bot selbst.
 
 ##### Report - System
 

@@ -26,6 +26,7 @@ class DEBUG(commands.Cog):
                         "\n`!debug bool` - Setzt das Bool-Argument deines Uccounts zurück"
                         "\n**Administration:** `!debug latency` - Zeigt die Latenz."
                         "\n**Administration:** `!debug version` - Versions kontrolle."
+                        "\n**Administration:** `!debug tweepy` - Setzt den Timestamp im Task.loop zurück."
         )
         embed.set_thumbnail(url=self.client.user.avatar_url)
 
@@ -73,6 +74,21 @@ class DEBUG(commands.Cog):
         embed.add_field(name="PyMongo", value=f"{pymongo.__version__}")
         embed.add_field(name="Aiohttp", value=f"{aiohttp.__version__}")
         embed.add_field(name="Tweepy", value=f"{tweepy.__version__}")
+
+        await Utils.TimeSend.se_ctx(ctx, embed, 8)
+
+
+    @debug.command()
+    @commands.is_owner()
+    async def tweepy(self, ctx):
+        self.client.Config.update_one({"_id": "TwitterAPI"}, {"$set": {"Time": 0}})
+
+        embed = discord.Embed(
+            title="-<DEBUG>-",
+            colour=discord.Colour(Utils.Farbe.Dark_Blue),
+            description='**DEBUG - Modus:** ```py\nself.client.Config.update_one({"_id": "TwitterAPI"}, {"$set": {"Time": Newest_Tweet_Time}})```'
+        )
+        embed.set_thumbnail(url=self.client.user.avatar_url)
 
         await Utils.TimeSend.se_ctx(ctx, embed, 8)
 

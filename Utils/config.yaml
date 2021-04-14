@@ -1,18 +1,29 @@
 Variablen:
 
   ClientSide:
+
     Prefix: "!"
     Token: "ODI4MjI5MTYxNjEyMjE0Mjky.YGmigw.Vg2fUHtnq9o0rqJiL5imzWtzLqw"
-    MongoDB: "mongodb+srv://Drageast:Schmidt04@cluster0.r1bgi.mongodb.net/Die_Botin?retryWrites=true&w=majority"
+
+    MongoDB:
+
+      Connection: "mongodb+srv://Drageast:Schmidt04@cluster0.r1bgi.mongodb.net/Die_Botin?retryWrites=true&w=majority"
+      Base: "Die_Botin"
+      Uccount: "Uccount"
+      Config: "Config"
+
     Status:
+
       ID: 1
-      Text: "Version 8.53 ist nun Online!"
+      Text: "Version 8.54 ist nun Online!"
 
     ClientWebhooks:
+
       ErrorHook: "https://discordapp.com/api/webhooks/829406759524368444/SZhAiFwZvPqHk4hDBaJlkAhClHYy2Yf_v1xSTjfC7ApuZMNiE-3eORQMUsQigTsZmclI"
       TwitterHook: "https://discordapp.com/api/webhooks/830088806547062866/WUKSypLuvD5yLtMSF8MHSz8hU_LFloeKGDVTw92riUe2Y1TSJHn0VligUIrLhhqx1K7b"
 
   TwitterSide:
+
     API_Key: "9byz0yCT8AEC8kBeFO48ZaAXI"
     API_SECRET_Key: "IFK3h8ExSKqPX7HyujmWKcW3ZoLUGmz7BnJF3i6yLPz1QbpuZR"
     BEARER_Token: "AAAAAAAAAAAAAAAAAAAAAIbEOQEAAAAAVxSlp%2BlagBYVKRLCLqKQv1%2B3j7c%3DE26bRzlNDTQdJczdTwC0k1L1EZctoa2EMMYesmzILMWj9AH6KX"
@@ -20,26 +31,37 @@ Variablen:
     ACCESS_SECRET_Token: "fe5atbryNWn74GbOqmVylmhQ3yWUwZGY9XPbJIStuDTPa"
 
   Dev_IDs:
+
     Drageast: 431017472083099660
 
-  UniversalEmoji:
-    Vorhut: <:Vorhut:829406277716279346>
-    Schmelztiegel: <:Schmelztiegel:829406183701086238>
-    Gambit: <:Gambit:829406147252977675>
-    Raid: <:Raids:831909518044299316>
+  Universals:
 
-  SpecifiedRoles:
-    Standart: "Mitglied"
-    ServerTeam:
-      Owner: "Owner"
-      Developer: "Developer"
-      Administrator: "Administrator"
+    Emojis:
+      CustomGuild:
+        Vorhut: <:Vorhut:829406277716279346>
+        Schmelztiegel: <:Schmelztiegel:829406183701086238>
+        Gambit: <:Gambit:829406147252977675>
+        Raid: <:Raids:831909518044299316>
 
-  SpecifiedChannels:
-    Welcome: "willkommen"
-    SpielerSuche: ["vorhut", "raid", "gambit", "schmelztiegel", "sonstiges"]
-    SupportChannelVOICE: 830060705662369885
-    AdminChat: 829416139879612476
+      Standart:
+        Accept: "\u2705"
+
+    Roles:
+
+      Standart: "Mitglied"
+
+      ServerTeam:
+
+        Owner: "Owner"
+        Developer: "Developer"
+        Administrator: "Administrator"
+
+    Channels:
+
+      Welcome: "willkommen"
+      SpielerSuche: [ "vorhut", "raid", "gambit", "schmelztiegel", "sonstiges" ]
+      SupportChannelVOICE: 830060705662369885
+      AdminChat: 829416139879612476
 
 Bilder:
 

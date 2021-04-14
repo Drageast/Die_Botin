@@ -32,9 +32,9 @@ class EventHandler(commands.Cog):
 
             channel = await self.client.fetch_channel(Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "SpecifiedChannels", "AdminChat"))
 
-            role1 = discord.utils.get(member.guild.roles, name=str(Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "SpecifiedRoles", "ServerTeam", "Owner")))
-            role2 = discord.utils.get(member.guild.roles, name=str(Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "SpecifiedRoles", "ServerTeam", "Administrator")))
-            role3 = discord.utils.get(member.guild.roles, name=str(Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "SpecifiedRoles", "ServerTeam", "Developer")))
+            role1 = discord.utils.get(member.guild.roles, name=str(Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "Universals", "Roles", "ServerTeam", "Owner")))
+            role2 = discord.utils.get(member.guild.roles, name=str(Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "Universals", "Roles", "ServerTeam", "Administrator")))
+            role3 = discord.utils.get(member.guild.roles, name=str(Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "Universals", "Roles", "ServerTeam", "Developer")))
 
             embed = discord.Embed(
                 title="Support Anfrage:",
@@ -68,7 +68,7 @@ class EventHandler(commands.Cog):
 
         m = await channel.send(embed=embed)
 
-        role = discord.utils.get(user.guild.roles, name=str(Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "SpecifiedRoles", "Standart")))
+        role = discord.utils.get(user.guild.roles, name=str(Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "Universals", "Roles", "Standart")))
         await user.add_roles(role)
 
         await asyncio.sleep(300)

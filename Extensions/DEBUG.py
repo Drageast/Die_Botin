@@ -8,6 +8,7 @@ import tweepy
 # Utils
 import Utils
 
+
 # Cog Initialising
 
 
@@ -86,7 +87,8 @@ class DEBUG(commands.Cog):
         embed = discord.Embed(
             title="-<DEBUG>-",
             colour=discord.Colour(Utils.Farbe.Dark_Blue),
-            description='**DEBUG - Modus:** ```py\nself.client.Config.update_one({"_id": "TwitterAPI"}, {"$set": {"Time": Newest_Tweet_Time}})```'
+            description='**DEBUG - Modus:** ```py\nself.client.Config.update_one({"_id": "TwitterAPI"}, {"$set": {"Time": Newest_Tweet_Time}})\n'
+                        'lambda: Task.loop(minutes=1)```'
         )
         embed.set_thumbnail(url=self.client.user.avatar_url)
 

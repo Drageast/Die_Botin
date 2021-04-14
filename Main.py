@@ -33,7 +33,10 @@ api = tweepy.API(auth)
 
 @client.listen()
 async def on_ready():
-    client.connection_url = Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "ClientSide", "MongoDB")
+    client.connection_url = Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "ClientSide", "MongoDB", "Connection")
+    Base = str(Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "ClientSide", "MongoDB", "Base"))
+    Uccount = str(Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "ClientSide", "MongoDB", "Uccount"))
+    Config = str(Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "ClientSide", "MongoDB", "Config"))
     status = int(Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "ClientSide", "Status", "ID"))
     Text = Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "ClientSide", "Status", "Text")
     game = "Destiny 2" if Text is None else Text
@@ -45,8 +48,8 @@ async def on_ready():
 
     await client.change_presence(status=choiceStatus, activity=choiceActivity)
     client.mongo = MongoClient(str(client.connection_url))
-    client.Uccount = client.mongo["Die_Botin"]["Uccount"]
-    client.Config = client.mongo["Die_Botin"]["Config"]
+    client.Uccount = client.mongo[Base][Uccount]
+    client.Config = client.mongo[Base][Config]
 
     get_twitter.start()
     print(f'DATENBANK AKTIV\n<-->\nONLINE\n<-->\n{client.user}\n<-->\nTwitter API AKTIV\n<-->')
@@ -55,9 +58,10 @@ async def on_ready():
 @tasks.loop(minutes=1)
 async def get_twitter():
     tweetL = api.user_timeline(id=2431136251, tweet_mode="extended")
-    Newest_Tweet_Text = tweetL[0].full_text
     Newest_Tweet_id_String = tweetL[0].id_str
+
     base_URL = f'https://www.twitter.com/BungieHelp/status/{Newest_Tweet_id_String}'
+
     Newest_Tweet_Time = tweetL[0].created_at
 
     data = client.Config.find_one({"_id": "TwitterAPI"})

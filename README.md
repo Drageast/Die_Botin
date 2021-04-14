@@ -39,14 +39,15 @@ Zu Beginn, fügen sie ihren Bot-Token in der `config.yaml` - Datei in dem Bereic
 `Variablen: ClientSide: Token` ein. *Diesen finden sie in ihrer [Applikation](https://discord.com/developers/applications)*. Sie können auch 
 den Präfix in dem korrespondierendem Bereich ändern. Darauf hinaus, fügen sie Emojis auf dem Server
 hinzu und setzten sie diese in der richtigen formatierung in den Bereich: 
-`Variablen: UniversalEmoji`. *Die formatierung erreichen sie, indem sie vor dem Emoji ein* \ *schreiben und dies absenden.*
+`Variablen: Universals: Emojis: CustomGuild`. *Die formatierung erreichen sie, indem sie vor dem Emoji ein* \ *schreiben und dies absenden.*
 
 ##### Mongo - Datenbank:
 
 Stellen Sie sicher, dass Sie ein gültiges [MongoDB-Konto](https://www.mongodb.com/) besitzen. Erstellen sie daraufhin ein `Cluster`
 und folgen sie den Anweisungen: `How to connect to your application`. Den erhaltenen Link fügen sie in der
-`config.yaml` - Datei im passendem Bereich ein. Je nachdem, wie ihre `Collection` heißt, müssen sie in dem Skrip:
-`Main.py` in **Zeile 27** unter `client.mongo["Cluster Name"]["Colection Name"]` die Namen anpassen.
+`config.yaml` - Datei im passendem Bereich ein. Je nachdem, wie ihre `Collection` heißt, müssen sie in der 
+`config.yaml` - Datei in dem Bereich `Variablen: ClientSide: MongoDB` eintragen. Den Collection-Namen als `Base`
+eintragen, die Rubrik dann passend zu `Uccount` und `Config`.
 
 ##### Webhook - Fehlerbewältigung:
 
@@ -73,3 +74,9 @@ eine Nachricht schreiben, den Rest managed der Bot selbst.
 Wenn Spieler während der Aktivität verlassen, beleidigen oder sonstige unangebrachte 
 Dinge tun, kann man den Spieler melden (Befehl: `!report @Spieler`), das führt dazu, dass wenn der Spieler sich in ein Ticket
 einträgt, der Ticket-Ersteller eine Warnung über den Spieler erhält.
+
+##### Tweepy - BungieHelp Nachrichten
+
+Der Bot schaut jede Minute, ob der Twitter-Kanal von `BungieHelp` etwas gepostet hat, wenn dies 
+der Fall ist, sendet er diesen Tweet an einen Kanal, den sie über die `config.yaml` - Datei einstellen können. 
+(Dies wird über einen Webhook bewältigt.)

@@ -8,11 +8,6 @@ import discord
 import Utils
 
 
-# Lokale Variablen
-
-Accept = "✔️"
-
-
 # Cog Initialising
 
 
@@ -20,6 +15,7 @@ class Reaction_EventHandler(commands.Cog):
 
     def __init__(self, client):
         self.client = client
+        self.reaction = str(Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "Universals", "Emojis", "Standart", "Accept"))
 
     async def wait_message(self, user):
         new_message = await self.client.wait_for('message', check=lambda message: message.author == user, timeout=360)
@@ -32,17 +28,17 @@ class Reaction_EventHandler(commands.Cog):
         if isinstance(message.channel, discord.channel.DMChannel):
             return
 
-        elif message.content.startswith("!"):
+        elif message.content.startswith(str(self.client.command_prefix)):
             return
 
-        elif message.channel.name not in Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "SpecifiedChannels", "SpielerSuche"):
+        elif message.channel.name not in Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "Universals", "Channels", "SpielerSuche"):
             return
 
         elif message.author.bot:
             return
         else:
 
-            await message.add_reaction("✅")
+            await message.add_reaction(self.reaction)
             m = await message.author.send(f"**{message.author.mention} : `Deine Nachricht ist nun als Ticket markiert!`**\n"
                                           f"_Dieses Ticket wird für ungefähr die nächsten 2 Stunden eingebunden, danach wird dieses Abgeschaltet._")
             await asyncio.sleep(10)
@@ -55,16 +51,16 @@ class Reaction_EventHandler(commands.Cog):
         if isinstance(reaction.message.channel, discord.channel.DMChannel):
             return
 
-        elif reaction.message.content.startswith("!"):
+        elif reaction.message.content.startswith(str(self.client.command_prefix)):
             return
 
-        elif reaction.message.channel.name not in Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "SpecifiedChannels", "SpielerSuche"):
+        elif reaction.message.channel.name not in Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "Universals", "Channels", "SpielerSuche"):
             return
 
         elif user.bot:
             return
 
-        elif str(reaction.emoji) != "✅":
+        elif str(reaction.emoji) != self.reaction:
             return
 
         else:
@@ -111,16 +107,16 @@ class Reaction_EventHandler(commands.Cog):
         if isinstance(reaction.message.channel, discord.channel.DMChannel):
             return
 
-        elif reaction.message.content.startswith("!"):
+        elif reaction.message.content.startswith(self.client.command_prefix):
             return
 
-        elif reaction.message.channel.name not in Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "SpecifiedChannels", "SpielerSuche"):
+        elif reaction.message.channel.name not in Utils.YamlContainerManagement.GET_yamlAttr("Variablen", "Universals", "Channels", "SpielerSuche"):
             return
 
         elif user.bot:
             return
 
-        elif str(reaction.emoji) != "✅":
+        elif str(reaction.emoji) != self.reaction:
             return
 
         else:

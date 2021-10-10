@@ -11,14 +11,10 @@ Dieser Bot ist für die Community: _Destiny 2 Deutschland Community ( PlayStatio
 2. AKAII96
 3. Zerberus 
 4. Virussumpf
-5. _Notfall Qualitätskontrolle:_ K03gang 
-6. _Networking:_ TheRealLaurinator
-7. LooCrank 
-8. _Notfall Qualitätskontrolle:_ Jonas R.
-9. Ines-agn
-10. _GitHub Manager:_ Eisenschild
-11. Bristerus
-12. Niclas Rapp
+5. _Networking:_ DerDoener04
+6. _Notfall Qualitätskontrolle:_ Jonas R.
+7. _GitHub Manager:_ Eisenschild
+8. Niclas Rapp
 
 ##### Genutzte pip – Pakete sind:
 
